@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.context.ApplicationListener
 import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
+import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
 
 @Component
@@ -19,9 +20,11 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
                                              val unitOfMeasureRepository: UnitOfMeasureRepository
                                             ) : ApplicationListener<ContextRefreshedEvent> {
 
+    @Transactional
     override fun onApplicationEvent(event: ContextRefreshedEvent?) {
         val guacamole = Recipe()
-        guacamole.cookTime = 10
+        guacamole.prepTime = 10
+        guacamole.cookTime = 0
         guacamole.difficulty = Difficulty.EASY
         guacamole.description = "The BEST guacamole! So easy to make with ripe avocados, salt," +
                 " serrano chiles, cilantro and lime. Garnish with red radishes or jicama. Serve with tortilla chips."
@@ -58,19 +61,19 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         lemonOrLimeJuice.description = "Fresh lime or lemon juice"
         // Onions
         val onions = Ingredient()
-        onions.description = "minced red onion or thinly sliced green onion"
+        onions.description = "Minced red onion or thinly sliced green onion"
         onions.amount = BigDecimal(2)
         onions.uom = unitOfMeasureRepository.findByDescription("Tablespoon").get()
         onions.recipe = guacamole
         // serrano chiles
         val serranoChiles = Ingredient()
-        serranoChiles.description = "serrano chiles, stems and seeds removed, minced"
+        serranoChiles.description = "Serrano chiles, stems and seeds removed, minced"
         serranoChiles.amount = BigDecimal(2)
         serranoChiles.uom = unitOfMeasureRepository.findByDescription("Piece").get()
         serranoChiles.recipe = guacamole
         // cilantro
         val cilantro = Ingredient()
-        cilantro.description = "cilantro (leaves and tender stems), finely chopped"
+        cilantro.description = "Cilantro (leaves and tender stems), finely chopped"
         cilantro.amount = BigDecimal(2)
         cilantro.uom = unitOfMeasureRepository.findByDescription("Tablespoon").get()
         cilantro.recipe = guacamole
@@ -79,10 +82,10 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         pepper.recipe = guacamole
         pepper.uom = unitOfMeasureRepository.findByDescription("Dash").get()
         pepper.amount = BigDecimal(1)
-        pepper.description = "freshly grated black pepper"
+        pepper.description = "Freshly grated black pepper"
         // tomato
         val tomato = Ingredient()
-        tomato.description = "tomato, seeds and pulp removed, chopped"
+        tomato.description = "Tomato, seeds and pulp removed, chopped"
         tomato.amount = BigDecimal(0.5)
         tomato.uom = unitOfMeasureRepository.findByDescription("Piece").get()
         tomato.recipe = guacamole
@@ -96,7 +99,6 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         guacamole.ingredients.add(cilantro)
         guacamole.ingredients.add(pepper)
         guacamole.ingredients.add(tomato)
-        recipeRepository.save(guacamole)
 
         // chicken tacos
         val chickenTacos = Recipe()
@@ -107,10 +109,16 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
 3 Grill the chicken
 4 Warm the tortillas
 5 Assemble the tacos"""
+        chickenTacos.description = "Spicy grilled chicken tacos! Quick marinade, then grill." +
+                " Ready in about 30 minutes. Great for a quick weeknight dinner, backyard cookouts, and tailgate parties."
         chickenTacos.difficulty = Difficulty.EASY
-        chickenTacos.cookTime = 30
-        val fastFood = categoryRepository.findByDescription("Fast Food").get()
-        fastFood.recipes.add(chickenTacos)
+        chickenTacos.cookTime = 15
+        chickenTacos.prepTime = 20
+        mexican.recipes.add(chickenTacos)
+        val american = categoryRepository.findByDescription("American").get()
+        american.recipes.add(chickenTacos)
+        chickenTacos.categories.add(american)
+        chickenTacos.categories.add(mexican)
         val tacosNotes = Notes()
         tacosNotes.recipe = chickenTacos
         tacosNotes.recipeNotes = "If you can't find ancho chili powder, you replace the ancho chili," +
@@ -124,18 +132,18 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         chiliPowder.recipe = chickenTacos
         chiliPowder.amount = BigDecimal(2)
         chiliPowder.uom = unitOfMeasureRepository.findByDescription("Teaspoon").get()
-        chiliPowder.description = "ancho chili powder"
+        chiliPowder.description = "Ancho chili powder"
         chickenTacos.ingredients.add(chiliPowder)
         // oregano
         val oregano = Ingredient()
         oregano.recipe = chickenTacos
         oregano.amount = BigDecimal(1)
         oregano.uom = unitOfMeasureRepository.findByDescription("Teaspoon").get()
-        oregano.description = "dried oregano"
+        oregano.description = "Dried oregano"
         chickenTacos.ingredients.add(oregano)
         // cumin
         val cumin = Ingredient()
-        cumin.description = "dried cumin"
+        cumin.description = "Dried cumin"
         cumin.recipe = chickenTacos
         cumin.amount = BigDecimal(1)
         cumin.uom = unitOfMeasureRepository.findByDescription("Teaspoon").get()
@@ -156,21 +164,21 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         chickenTacos.ingredients.add(salt)
         // garlic
         val garlic = Ingredient()
-        garlic.description = "clove garlic, finely chopped"
+        garlic.description = "Clove garlic, finely chopped"
         garlic.recipe = chickenTacos
         garlic.amount = BigDecimal(1)
         garlic.uom = unitOfMeasureRepository.findByDescription("Piece").get()
         chickenTacos.ingredients.add(garlic)
         // orange zest
         val orangeZest = Ingredient()
-        orangeZest.description = "finely grated orange zest"
+        orangeZest.description = "Finely grated orange zest"
         orangeZest.amount = BigDecimal(1)
         orangeZest.uom = unitOfMeasureRepository.findByDescription("Tablespoon").get()
         orangeZest.recipe = chickenTacos
         chickenTacos.ingredients.add(orangeZest)
         // orange juice
         val orangeJuice = Ingredient()
-        orangeJuice.description = "fresh-squeezed orange juice"
+        orangeJuice.description = "Fresh-squeezed orange juice"
         orangeJuice.recipe = chickenTacos
         orangeJuice.uom = unitOfMeasureRepository.findByDescription("Tablespoon").get()
         orangeJuice.amount = BigDecimal(3)
@@ -184,7 +192,7 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         chickenTacos.ingredients.add(oliveOil)
         // chicken thighs
         val chickenThighs = Ingredient()
-        chickenThighs.description = "skinless, boneless chicken thighs"
+        chickenThighs.description = "Skinless, boneless chicken thighs"
         chickenThighs.recipe = chickenTacos
         chickenThighs.amount = BigDecimal(1.25)
         chickenThighs.uom = unitOfMeasureRepository.findByDescription("Ounce").get()
@@ -192,13 +200,13 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         // tortillas
         val tortillas = Ingredient()
         tortillas.recipe = chickenTacos
-        tortillas.description = "small corn tortillas"
+        tortillas.description = "Small corn tortillas"
         tortillas.amount = BigDecimal(8)
         tortillas.uom = unitOfMeasureRepository.findByDescription("Piece").get()
         chickenTacos.ingredients.add(tortillas)
         // baby arugula
         val arugula = Ingredient()
-        arugula.description = "packed baby arugula (3 ounces)"
+        arugula.description = "Packed baby arugula (3 ounces)"
         arugula.recipe = chickenTacos
         arugula.amount = BigDecimal(3)
         arugula.uom = unitOfMeasureRepository.findByDescription("Cup").get()
@@ -212,21 +220,21 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         chickenTacos.ingredients.add(avocados2)
         // radishes
         val radish = Ingredient()
-        radish.description = "radishes, thinly sliced"
+        radish.description = "Radishes, thinly sliced"
         radish.recipe = chickenTacos
         radish.amount = BigDecimal(4)
         radish.uom = unitOfMeasureRepository.findByDescription("Piece").get()
         chickenTacos.ingredients.add(radish)
         // cherry tomatoes
         val cherryTomatoes = Ingredient()
-        cherryTomatoes.description = "cherry tomatoes, halved"
+        cherryTomatoes.description = "Cherry tomatoes, halved"
         cherryTomatoes.recipe = chickenTacos
         cherryTomatoes.amount = BigDecimal(0.5)
         cherryTomatoes.uom = unitOfMeasureRepository.findByDescription("Pinch").get()
         chickenTacos.ingredients.add(cherryTomatoes)
         // red onion
         val redOnion = Ingredient()
-        redOnion.description = "onion, thinly sliced"
+        redOnion.description = "Onion, thinly sliced"
         redOnion.recipe = chickenTacos
         redOnion.amount = BigDecimal(0.25)
         redOnion.uom = unitOfMeasureRepository.findByDescription("Piece").get()
@@ -241,19 +249,23 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         // sour cream
         val sourCream = Ingredient()
         sourCream.recipe = chickenTacos
-        sourCream.description = "sour cream thinned with 1/4 cup milk"
+        sourCream.description = "Sour cream thinned with 1/4 cup milk"
         sourCream.amount = BigDecimal(0.5)
         sourCream.uom = unitOfMeasureRepository.findByDescription("Cup").get()
         chickenTacos.ingredients.add(sourCream)
         // lime
         val lime = Ingredient()
-        lime.description = "lime, cut into wedges"
+        lime.description = "Lime, cut into wedges"
         lime.amount = BigDecimal(1)
         lime.uom = unitOfMeasureRepository.findByDescription("Piece").get()
         lime.recipe = chickenTacos
         chickenTacos.ingredients.add(lime)
-        // save tacos
-        recipeRepository.save(chickenTacos)
+
+        //Saving recipes
+        val list = ArrayList<Recipe>()
+        list.add(chickenTacos)
+        list.add(guacamole)
+        recipeRepository.saveAll(list)
     }
 
 

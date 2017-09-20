@@ -3,7 +3,7 @@ package com.bairei.springrecipes.domain
 import javax.persistence.*
 
 @Entity
-class Recipe (@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long = 0,
+data class Recipe (@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long = 0,
               var description: String = "",
               var prepTime: Int = 0,
               var cookTime: Int = 0,
@@ -15,7 +15,7 @@ class Recipe (@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Lo
               @OneToMany(cascade = arrayOf(CascadeType.ALL), mappedBy = "recipe")
               var ingredients: MutableSet<Ingredient> = emptySet<Ingredient>().toMutableSet(),
               @Lob var image: ByteArray = ByteArray(0),
-              @OneToOne(cascade = arrayOf(CascadeType.ALL)) var notes: Notes = Notes(),
+              @OneToOne(cascade = arrayOf(CascadeType.ALL)) var notes: Notes? = null,
               @ManyToMany
               @JoinTable( name = "recipe_category", joinColumns = arrayOf(JoinColumn(name = "recipe_id")),
                                     inverseJoinColumns = arrayOf(JoinColumn(name = "category_id")))
