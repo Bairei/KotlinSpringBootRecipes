@@ -54,7 +54,3 @@ dependencies {
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
-
-bootRun{
-	sourceResources sourceSets.main
-}

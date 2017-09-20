@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service
 @Service
 class RecipeServiceImpl @Autowired constructor(private val recipeRepository: RecipeRepository) : RecipeService {
 
-    override fun findAll(): HashSet<Recipe> {
+    override fun findAll(): Set<Recipe> {
         return recipeRepository.findAll().map { it }.toHashSet()
     }
 

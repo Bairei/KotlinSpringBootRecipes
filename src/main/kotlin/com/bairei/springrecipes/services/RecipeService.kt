@@ -5,5 +5,5 @@ import java.util.*
 import kotlin.collections.HashSet
 
 interface RecipeService {
-    fun findAll() : HashSet<Recipe>
+    fun findAll() : Set<Recipe>
 }
