@@ -3,7 +3,7 @@ package com.bairei.springrecipes.domain
 import javax.persistence.*
 
 @Entity
-data class Recipe (@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long = 0,
+data class Recipe (@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long? = 0,
               var description: String = "",
               var prepTime: Int = 0,
               var cookTime: Int = 0,

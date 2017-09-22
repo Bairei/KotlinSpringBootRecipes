@@ -19,7 +19,7 @@ class RecipeToRecipeCommand (private val categoryConverter: CategoryToCategoryCo
 
         val recipe = RecipeCommand()
 
-        recipe.id = source.id
+        recipe.id = source.id!!
         recipe.cookTime = source.cookTime
         recipe.prepTime = source.prepTime
         recipe.description = source.description

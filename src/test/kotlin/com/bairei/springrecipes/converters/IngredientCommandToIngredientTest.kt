@@ -2,7 +2,6 @@ package com.bairei.springrecipes.converters
 
 import com.bairei.springrecipes.commands.IngredientCommand
 import com.bairei.springrecipes.commands.UnitOfMeasureCommand
-import com.bairei.springrecipes.domain.Ingredient
 import com.bairei.springrecipes.domain.Recipe
 import org.junit.Before
 import org.junit.Test
@@ -42,7 +41,7 @@ class IngredientCommandToIngredientTest {
         command.description = DESCRIPTION
         val unitOfMeasureCommand = UnitOfMeasureCommand()
         unitOfMeasureCommand.id = UOM_ID
-        command.unitOfMeasure = unitOfMeasureCommand
+        command.uom = unitOfMeasureCommand
 
         //when
         val ingredient = converter.convert(command)

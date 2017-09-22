@@ -7,5 +7,5 @@ class IngredientCommand {
     var id: Long = 0
     var description: String = ""
     var amount: BigDecimal = BigDecimal.ZERO
-    var unitOfMeasure: UnitOfMeasureCommand = UnitOfMeasureCommand()
+    var uom: UnitOfMeasureCommand = UnitOfMeasureCommand()
 }

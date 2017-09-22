@@ -1,6 +1,5 @@
 package com.bairei.springrecipes.converters
 
-import com.bairei.springrecipes.commands.IngredientCommand
 import com.bairei.springrecipes.domain.Ingredient
 import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.domain.UnitOfMeasure
@@ -47,8 +46,8 @@ class IngredientToIngredientCommandTest {
         //when
         val ingredientCommand = converter.convert(ingredient)
         //then
-        assertEquals(ingredientCommand!!.unitOfMeasure.id, 0) // Assert that has uom
-        assertEquals(ingredientCommand.unitOfMeasure.description, "") // with default values (id = 0, desc ="")
+        assertEquals(ingredientCommand!!.uom.id, 0) // Assert that has uom
+        assertEquals(ingredientCommand.uom.description, "") // with default values (id = 0, desc ="")
         assertEquals(ID_VALUE, ingredientCommand.id)
         // assertEquals(RECIPE, ingredientCommand.get);
         assertEquals(AMOUNT, ingredientCommand.amount)
@@ -73,8 +72,8 @@ class IngredientToIngredientCommandTest {
         val ingredientCommand = converter.convert(ingredient)
         //then
         assertEquals(ID_VALUE, ingredientCommand!!.id)
-        assertNotNull(ingredientCommand.unitOfMeasure)
-        assertEquals(UOM_ID, ingredientCommand.unitOfMeasure.id)
+        assertNotNull(ingredientCommand.uom)
+        assertEquals(UOM_ID, ingredientCommand.uom.id)
         // assertEquals(RECIPE, ingredientCommand.get);
         assertEquals(AMOUNT, ingredientCommand.amount)
         assertEquals(DESCRIPTION, ingredientCommand.description)

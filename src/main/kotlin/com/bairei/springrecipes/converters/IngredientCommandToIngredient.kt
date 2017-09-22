@@ -20,7 +20,7 @@ class IngredientCommandToIngredient @Autowired constructor(private val uomConver
         ingredient.id = source.id
         ingredient.amount = source.amount
         ingredient.description = source.description
-        ingredient.uom = uomConverter.convert(source.unitOfMeasure)!!
+        ingredient.uom = uomConverter.convert(source.uom)!!
         return ingredient
     }
 }

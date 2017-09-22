@@ -1,5 +1,7 @@
 package com.bairei.springrecipes.services
 
+import com.bairei.springrecipes.converters.RecipeCommandToRecipe
+import com.bairei.springrecipes.converters.RecipeToRecipeCommand
 import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.repositories.RecipeRepository
 import org.junit.Test
@@ -19,20 +21,26 @@ class RecipeServiceImplTest {
     @Mock
     lateinit var recipeRepository: RecipeRepository
 
+    @Mock
+    lateinit var recipeToCommand : RecipeToRecipeCommand
+
+    @Mock
+    lateinit var recipeCommandToRecipe : RecipeCommandToRecipe
+
     @Before
     @Throws(Exception::class)
     fun setUp() {
         MockitoAnnotations.initMocks(this)
 
-        recipeService = RecipeServiceImpl(recipeRepository)
+        recipeService = RecipeServiceImpl(recipeRepository, recipeCommandToRecipe, recipeToCommand)
     }
 
     @Test
     @Throws(Exception::class)
     fun getRecipes() {
 
-        var recipe : Recipe = Recipe()
-        var recipesData = HashSet<Recipe>()
+        val recipe : Recipe = Recipe()
+        val recipesData = HashSet<Recipe>()
         recipesData.add(recipe)
 
         `when`(recipeService.findAll()).thenReturn(recipesData)
@@ -57,6 +65,20 @@ class RecipeServiceImplTest {
         assertNotNull("Null recipe returned", recipeReturned)
         verify(recipeRepository, times(1)).findById(anyLong())
         verify(recipeRepository, never()).findAll()
+    }
+
+    @Test
+    fun testDeleteById() {
+        // given
+        val idToDelete = 2L
+
+        // when
+        recipeService.deleteById(idToDelete)
+
+        // no 'when', since method has void return type
+
+        // then
+        verify(recipeRepository, times(1)).deleteById(idToDelete)
     }
 
 }

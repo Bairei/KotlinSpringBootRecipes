@@ -25,7 +25,6 @@
             <!--/*@thymesVar id="recipe" type="com.bairei.springrecipes.domain.Recipe"*/-->
                 <div class="card mb-2 border-primary">
                     <div class="card-header bg-primary text-white">
-
                         <h1 class="card-title" th:text="${recipe.description}">Recipe Description Here!</h1>
                     </div>
                     <div class="card-body">
@@ -80,7 +79,7 @@
                                 <h5>URL:</h5>
                             </div>
                             <div class="col-md-3">
-                                <p th:text="${recipe.url}">http://www.example.com</p>
+                                <p><a href="#" th:href="@{recipe.url}">View Original</a></p>
                             </div>
                         </div>
                     </div>

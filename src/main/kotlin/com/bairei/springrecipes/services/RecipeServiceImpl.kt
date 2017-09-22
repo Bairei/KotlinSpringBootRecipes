@@ -1,13 +1,19 @@
 package com.bairei.springrecipes.services
 
+import com.bairei.springrecipes.commands.RecipeCommand
+import com.bairei.springrecipes.converters.RecipeCommandToRecipe
+import com.bairei.springrecipes.converters.RecipeToRecipeCommand
 import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.repositories.RecipeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
-import java.util.*
+import org.springframework.transaction.annotation.Transactional
 
 @Service
-class RecipeServiceImpl @Autowired constructor(private val recipeRepository: RecipeRepository) : RecipeService {
+class RecipeServiceImpl @Autowired constructor(private val recipeRepository: RecipeRepository,
+                                               private val recipeCommandToRecipe: RecipeCommandToRecipe,
+                                               private val recipeToRecipeCommand: RecipeToRecipeCommand) : RecipeService {
+
     override fun findById(id: Long): Recipe {
         val recipeOptional = recipeRepository.findById(id)
         if (!recipeOptional.isPresent){
@@ -20,5 +26,19 @@ class RecipeServiceImpl @Autowired constructor(private val recipeRepository: Rec
         return recipeRepository.findAll().map { it }.toHashSet()
     }
 
+    override fun saveRecipeCommand(command: RecipeCommand?): RecipeCommand {
+        val detachedRecipe = recipeCommandToRecipe.convert(command)
 
+        val savedRecipe = recipeRepository.save(detachedRecipe)
+        return recipeToRecipeCommand.convert(savedRecipe)!!
+    }
+
+    @Transactional
+    override fun findCommandById(id: Long): RecipeCommand? {
+        return recipeToRecipeCommand.convert(findById(id))
+    }
+
+    override fun deleteById(id: Long) {
+        recipeRepository.deleteById(id)
+    }
 }
