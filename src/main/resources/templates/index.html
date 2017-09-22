@@ -3,18 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <title>RecipeMVC</title>
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+    <script src="http://cdn.jsdelivr.net/webjars/org.webjars/jquery/3.2.1/jquery.min.js"
             integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-            crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"
+            crossorigin="anonymous" th:src="@{/webjars/jquery/3.2.1/jquery.min.js}"></script>
+    <script src="http://cdn.jsdelivr.net/webjars/org.webjars.bower/popper.js/1.12.5/dist/umd/popper.min.js"
             integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
-            crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css"
+            crossorigin="anonymous" th:src="@{/webjars/popper.js/1.12.5/dist/umd/popper.min.js}"></script>
+    <link rel="stylesheet" href="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap/4.0.0-beta/css/bootstrap.min.css"
           integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
-          crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/js/bootstrap.min.js"
+          crossorigin="anonymous" th:href="@{/webjars/bootstrap/4.0.0-beta/css/bootstrap.min.css}">
+    <script src="http://cdn.jsdelivr.net/webjars/org.webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js"
             integrity="sha384-h0AbiXch4ZDo7tp9hKZ4TsHbi047NrKGLO3SEJAg45jXxnGIfYzk4Si90RDIqNm1"
-            crossorigin="anonymous"></script>
+            crossorigin="anonymous" th:src="@{/webjars/bootstrap/4.0.0-beta/js/bootstrap.min.js}"></script>
 </head>
 <body>
 <div class = "container-fluid" style="margin-top: 20px">
@@ -27,23 +27,27 @@
                 <div class="card-body">
                     <div th:if="${not #sets.isEmpty(recipes)}">
                         <table class="table table-striped table-bordered table-hover table-sm table-responsive">
-                            <thead class="thead">
+                            <thead class="thead-i">
                             <tr>
                                 <th>ID</th>
                                 <th>Description</th>
+                                <th>View</th>
                             </tr>
                             </thead>
                             <tr th:remove="all">
                                 <td th:text="${recipe.id}">123</td>
                                 <td th:text="${recipe.description}">Tasty Goodness1</td>
+                                <td><a href="#">View</a></td>
                             </tr>
                             <tr th:remove="all">
                                 <td th:text="${recipe.id}">123</td>
                                 <td th:text="${recipe.description}">Tasty Goodness2</td>
+                                <td><a href="#">View</a></td>
                             </tr>
                             <tr th:each="recipe : ${recipes}">
                                 <td th:text="${recipe.id}">123</td>
                                 <td th:text="${recipe.description}">Tasty Goodness</td>
+                                <td><a href="#" th:href="@{'/recipe/show/' + ${recipe.id}}" th:text="${recipe.id}">View</a></td>
                             </tr>
                         </table>
                     </div>

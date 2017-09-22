@@ -26,8 +26,7 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         guacamole.prepTime = 10
         guacamole.cookTime = 0
         guacamole.difficulty = Difficulty.EASY
-        guacamole.description = "The BEST guacamole! So easy to make with ripe avocados, salt," +
-                " serrano chiles, cilantro and lime. Garnish with red radishes or jicama. Serve with tortilla chips."
+        guacamole.description = "Perfect Guacamole"
         guacamole.directions = "1 Cut avocado, remove flesh.\n2 Mash with a fork.\n3 Add salt, lime juice, and the rest" +
                 "\n4 Cover with plastic and chill to store"
         val guacamoleNotes = Notes()
@@ -36,7 +35,7 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
                 " do not touch your eyes or the area near your eyes with your hands for several hours."
         guacamole.notes = guacamoleNotes
         guacamole.url = "http://www.simplyrecipes.com/recipes/perfect_guacamole/"
-        guacamole.source = "http://www.simplyrecipes.com/recipes/perfect_guacamole/"
+        guacamole.source = "Simply Recipes"
         guacamole.servings = 4
         val mexican = categoryRepository.findByDescription("Mexican").get()
         mexican.recipes.add(guacamole)
@@ -103,14 +102,13 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
         // chicken tacos
         val chickenTacos = Recipe()
         chickenTacos.url = "http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/"
-        chickenTacos.source="http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/"
-        chickenTacos.directions = """1 Prepare a gas or charcoal grill for medium-high, direct heat.
-2 Make the marinade and coat the chicken
-3 Grill the chicken
-4 Warm the tortillas
-5 Assemble the tacos"""
-        chickenTacos.description = "Spicy grilled chicken tacos! Quick marinade, then grill." +
-                " Ready in about 30 minutes. Great for a quick weeknight dinner, backyard cookouts, and tailgate parties."
+        chickenTacos.source="Simply Recipes"
+        chickenTacos.directions = "1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
+                "2 Make the marinade and coat the chicken\n" +
+                "3 Grill the chicken\n" +
+                "4 Warm the tortillas\n" +
+                "5 Assemble the tacos"
+        chickenTacos.description = "Spicy Grilled Chicken Tacos"
         chickenTacos.difficulty = Difficulty.EASY
         chickenTacos.cookTime = 15
         chickenTacos.prepTime = 20

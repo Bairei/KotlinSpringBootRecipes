@@ -6,4 +6,6 @@ import kotlin.collections.HashSet
 
 interface RecipeService {
     fun findAll() : Set<Recipe>
+
+    fun findById(id: Long) : Recipe
 }
