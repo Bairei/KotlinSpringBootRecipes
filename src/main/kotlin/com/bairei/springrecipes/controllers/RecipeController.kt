@@ -45,7 +45,7 @@ class RecipeController @Autowired constructor(val recipeService: RecipeService){
     @PostMapping("recipe")
     fun saveOrUpdate(@ModelAttribute command : RecipeCommand) : String {
         val savedCommand = recipeService.saveRecipeCommand(command)
-        return "redirect:/recipe/" + savedCommand.id + "/show"
+        return "redirect:/recipe/${savedCommand.id}/show"
     }
 
 

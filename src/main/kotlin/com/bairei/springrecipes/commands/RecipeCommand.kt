@@ -14,5 +14,6 @@ class RecipeCommand (
         var ingredients: MutableSet<IngredientCommand> = emptySet<IngredientCommand>().toHashSet(),
         var difficulty: Difficulty = Difficulty.EASY,
         var notes : NotesCommand = NotesCommand(),
+        var image : ByteArray = ByteArray(0),
         var categories : MutableSet<CategoryCommand> = emptySet<CategoryCommand>().toHashSet()
 )

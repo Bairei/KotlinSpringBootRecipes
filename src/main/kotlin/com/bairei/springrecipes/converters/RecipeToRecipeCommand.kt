@@ -28,6 +28,7 @@ class RecipeToRecipeCommand (private val categoryConverter: CategoryToCategoryCo
         recipe.servings = source.servings
         recipe.source = source.source
         recipe.url = source.url
+        recipe.image = source.image
         recipe.notes = notesConverter.convert(source.notes)!!
 
         if(source.categories.isNotEmpty()){

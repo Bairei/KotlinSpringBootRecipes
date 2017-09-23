@@ -81,7 +81,7 @@ class IngredientController constructor(private val recipeService: RecipeService,
         log.debug("saved recipe id: " + savedCommand.recipeId)
         log.debug("saved ingredient id: " + savedCommand.id)
 
-        return "redirect:/recipe/" + savedCommand.recipeId + "/ingredient/" + savedCommand.id + "/show"
+        return "redirect:/recipe/${savedCommand.recipeId}/ingredient/${savedCommand.id}/show"
     }
 
 }
