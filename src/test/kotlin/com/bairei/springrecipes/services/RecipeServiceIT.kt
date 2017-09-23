@@ -1,9 +1,7 @@
 package com.bairei.springrecipes.services
 
-import com.bairei.springrecipes.commands.RecipeCommand
 import com.bairei.springrecipes.converters.RecipeCommandToRecipe
 import com.bairei.springrecipes.converters.RecipeToRecipeCommand
-import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.repositories.RecipeRepository
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -20,32 +18,32 @@ import org.junit.Assert.assertEquals
  */
 @RunWith(SpringRunner::class)
 @SpringBootTest
-class RecipeServiceIT {
+open class RecipeServiceIT { // since 1.2-M2 it's required to give it 'open' prefix, otherwise
+                             // it throws IllegalArgumentException (cannot subclass final class)
+    @Autowired
+    private lateinit var recipeService: RecipeService
 
     @Autowired
-    lateinit var recipeService: RecipeService
+    private lateinit var recipeRepository: RecipeRepository
 
     @Autowired
-    lateinit var recipeRepository: RecipeRepository
+    private lateinit var recipeCommandToRecipe: RecipeCommandToRecipe
 
     @Autowired
-    lateinit var recipeCommandToRecipe: RecipeCommandToRecipe
-
-    @Autowired
-    lateinit var recipeToRecipeCommand: RecipeToRecipeCommand
+    private lateinit var recipeToRecipeCommand: RecipeToRecipeCommand
 
     @Transactional
     @Test
     @Throws(Exception::class)
-    fun testSaveOfDescription() {
+    open fun testSaveOfDescription() {
         //given
-        var recipes = recipeRepository.findAll()
-        var testRecipe = recipes.iterator().next()
-        var testRecipeCommand = recipeToRecipeCommand.convert(testRecipe)
+        val recipes = recipeRepository.findAll()
+        val testRecipe = recipes.iterator().next()
+        val testRecipeCommand = recipeToRecipeCommand.convert(testRecipe)
 
         //when
         testRecipeCommand!!.description = NEW_DESCRIPTION
-        var savedRecipeCommand = recipeService.saveRecipeCommand(testRecipeCommand)
+        val savedRecipeCommand = recipeService.saveRecipeCommand(testRecipeCommand)
 
         //then
         assertEquals(NEW_DESCRIPTION, savedRecipeCommand.description)
