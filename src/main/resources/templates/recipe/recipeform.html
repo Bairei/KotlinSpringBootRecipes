@@ -22,7 +22,7 @@
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 mx-auto">
-            <form th:object="${recipe}" th:action="@{/recipe/}">
+            <form th:object="${recipe}" th:action="@{/recipe/}", method="post">
                 <input type="hidden" th:field="*{id}"/>
                 <div class="card mb-2 border-primary">
                     <div class="card-header bg-primary text-white">
@@ -65,7 +65,14 @@
                             </div>
                             <div class="col-md-3 form-group">
                                 <label>Difficulty:</label>
-                                <select class="form-control">
+                                <select class="form-control" th:field="*{difficulty}">
+                                    <option th:each="difficultyValue : ${T(com.bairei.springrecipes.domain.Difficulty).values()}"
+                                            th:value="${difficultyValue.name()}"
+                                            th:text="${#strings.capitalize(#strings.toLowerCase(difficultyValue.name()))}"
+                                        val
+                                    </option>
+                                </select>
+                                <select class="form-control" th:remove="all">
                                     <option>Easy</option>
                                     <option>Medium</option>
                                     <option>Hard</option>

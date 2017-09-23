@@ -1,6 +1,7 @@
 package com.bairei.springrecipes.controllers
 
 import com.bairei.springrecipes.commands.RecipeCommand
+import com.bairei.springrecipes.domain.Difficulty
 import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.services.RecipeService
 import org.slf4j.Logger
@@ -18,37 +19,37 @@ class RecipeController @Autowired constructor(val recipeService: RecipeService){
 
     private val log: Logger = LoggerFactory.getLogger(this::class.java)
 
-    @GetMapping
-    @RequestMapping("/recipe/{id}/show")
+
+    @GetMapping("/recipe/{id}/show")
     fun showById(@PathVariable id: String, model:Model) : String {
         model.addAttribute("recipe", recipeService.findById(id.toLong()))
 
         return "recipe/show"
     }
 
-    @GetMapping
-    @RequestMapping("recipe/new")
+
+    @GetMapping("recipe/new")
     fun newRecipe(model : Model) : String {
         model.addAttribute("recipe", Recipe())
         return "recipe/recipeform"
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{id}/update")
+
+    @GetMapping("recipe/{id}/update")
     fun updateRecipe (@PathVariable id: String, model: Model): String {
         model.addAttribute("recipe", recipeService.findCommandById(id.toLong()))
         return "recipe/recipeform"
     }
 
-    @PostMapping
-    @RequestMapping("recipe")
+
+    @PostMapping("recipe")
     fun saveOrUpdate(@ModelAttribute command : RecipeCommand) : String {
         val savedCommand = recipeService.saveRecipeCommand(command)
         return "redirect:/recipe/" + savedCommand.id + "/show"
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{id}/delete")
+
+    @GetMapping("recipe/{id}/delete")
     fun deleteRecipe(@PathVariable id: String): String{
         recipeService.deleteById(id.toLong())
         log.debug("Deleting id: " + id)

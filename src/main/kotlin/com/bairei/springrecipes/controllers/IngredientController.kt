@@ -18,8 +18,8 @@ class IngredientController constructor(private val recipeService: RecipeService,
 
     private val log: Logger = LoggerFactory.getLogger(IngredientController::class.java)
 
-    @GetMapping
-    @RequestMapping("/recipe/{recipeId}/ingredients")
+
+    @GetMapping("/recipe/{recipeId}/ingredients")
     fun listIngredients(@PathVariable recipeId: String, model: Model): String {
         log.debug("Getting ingredient list for recipe id " + recipeId)
 
@@ -28,16 +28,16 @@ class IngredientController constructor(private val recipeService: RecipeService,
         return "recipe/ingredient/list"
     }
 
-    @GetMapping
-    @RequestMapping("/recipe/{recipeId}/ingredient/{id}/show")
+
+    @GetMapping("/recipe/{recipeId}/ingredient/{id}/show")
     fun showRecipeIngredient(@PathVariable recipeId: String,
                              @PathVariable id: String, model: Model) : String{
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId.toLong(), id.toLong()))
         return "recipe/ingredient/show"
     }
 
-    @GetMapping
-    @RequestMapping("/recipe/{recipeId}/ingredient/{id}/update")
+
+    @GetMapping("/recipe/{recipeId}/ingredient/{id}/update")
     fun updateRecipeIngredient(@PathVariable recipeId: String, @PathVariable id: String,
                                model: Model) : String{
         model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId.toLong(), id.toLong()))
@@ -46,8 +46,8 @@ class IngredientController constructor(private val recipeService: RecipeService,
         return "recipe/ingredient/ingredientform"
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{recipeId}/ingredient/new")
+
+    @GetMapping("recipe/{recipeId}/ingredient/new")
     fun newRecipe(@PathVariable recipeId: String, model: Model) : String {
         // making sure we have a good id value
         val recipeCommand = recipeService.findCommandById(recipeId.toLong())
@@ -65,16 +65,16 @@ class IngredientController constructor(private val recipeService: RecipeService,
         return "recipe/ingredient/ingredientform"
     }
 
-    @GetMapping
-    @RequestMapping("recipe/{recipeId}/ingredient/{id}/delete")
+
+    @GetMapping("recipe/{recipeId}/ingredient/{id}/delete")
     fun deleteRecipe(@PathVariable recipeId: String, @PathVariable id: String) : String{
         ingredientService.deleteIngredientFromRecipeById(recipeId.toLong(), id.toLong())
         log.debug("Deleting ingredient id: $id, recipeId: $recipeId")
         return "redirect:/recipe/$recipeId/ingredients/"
     }
 
-    @PostMapping
-    @RequestMapping("/recipe/{recipeId}/ingredient")
+
+    @PostMapping("/recipe/{recipeId}/ingredient")
     fun saveOrUpdate(@ModelAttribute command: IngredientCommand) : String{
         val savedCommand = ingredientService.saveIngredientCommand(command)!!
 
