@@ -5,7 +5,6 @@ import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.services.RecipeService
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mock
 import org.mockito.Mockito.*
@@ -16,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
+import com.nhaarman.mockito_kotlin.any
 
 /**
  * created by bairei on 21/09/17.
@@ -70,7 +70,7 @@ class RecipeControllerTest {
         val command = RecipeCommand()
         command.id = 2L
 
-        `when`(recipeService.saveRecipeCommand(ArgumentMatchers.anyObject())).thenReturn(command)
+        `when`(recipeService.saveRecipeCommand(any())).thenReturn(command)
 
         mockMvc.perform(post("/recipe")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)

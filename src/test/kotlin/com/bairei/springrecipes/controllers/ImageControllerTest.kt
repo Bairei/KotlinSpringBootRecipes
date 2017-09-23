@@ -1,26 +1,22 @@
 package com.bairei.springrecipes.controllers
 
-import com.bairei.springrecipes.services.RecipeService
-import org.mockito.Mock
-import org.springframework.test.web.servlet.MockMvc
-import org.mockito.ArgumentMatchers.anyLong
-import javassist.CtMethod.ConstParameter.string
-import org.springframework.mock.web.MockMultipartFile
 import com.bairei.springrecipes.commands.RecipeCommand
 import com.bairei.springrecipes.services.ImageService
+import com.bairei.springrecipes.services.RecipeService
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers.anyLong
+import org.mockito.Mock
 import org.mockito.Mockito.*
-import org.springframework.web.servlet.mvc.method.annotation.MvcUriComponentsBuilder.controller
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import org.springframework.test.web.servlet.setup.MockMvcBuilders.standaloneSetup
 import org.mockito.MockitoAnnotations
 import org.springframework.mock.web.MockHttpServletResponse
+import org.springframework.mock.web.MockMultipartFile
+import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import org.springframework.web.multipart.MultipartFile
-import org.junit.Assert.*
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
 
 class ImageControllerTest {

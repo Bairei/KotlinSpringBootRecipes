@@ -1,18 +1,15 @@
 package com.bairei.springrecipes.services
 
-import com.bairei.springrecipes.commands.UnitOfMeasureCommand
 import com.bairei.springrecipes.converters.UnitOfMeasureToUnitOfMeasureCommand
 import com.bairei.springrecipes.domain.UnitOfMeasure
 import com.bairei.springrecipes.repositories.UnitOfMeasureRepository
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-
-import java.util.HashSet
-
-import org.junit.Assert.assertEquals
 import org.mockito.Mockito.*
+import org.mockito.MockitoAnnotations
+import java.util.*
 
 class UnitOfMeasureServiceImplTest {
 

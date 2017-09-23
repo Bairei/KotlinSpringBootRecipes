@@ -2,19 +2,16 @@ package com.bairei.springrecipes.services
 
 import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.repositories.RecipeRepository
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 import org.mockito.ArgumentCaptor
+import org.mockito.ArgumentMatchers
 import org.mockito.Mock
+import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import org.springframework.mock.web.MockMultipartFile
-import org.springframework.web.multipart.MultipartFile
-
-import java.util.Optional
-
-import org.junit.Assert.assertEquals
-import org.mockito.ArgumentMatchers
-import org.mockito.Mockito.*
+import java.util.*
 
 
 class ImageServiceImplTest {

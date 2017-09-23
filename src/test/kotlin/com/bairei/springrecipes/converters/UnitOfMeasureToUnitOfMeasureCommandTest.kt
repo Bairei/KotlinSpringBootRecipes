@@ -1,11 +1,9 @@
 package com.bairei.springrecipes.converters
 
-import com.bairei.springrecipes.commands.UnitOfMeasureCommand
 import com.bairei.springrecipes.domain.UnitOfMeasure
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class UnitOfMeasureToUnitOfMeasureCommandTest {
 

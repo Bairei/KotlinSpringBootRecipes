@@ -1,11 +1,9 @@
 package com.bairei.springrecipes.converters
 
 import com.bairei.springrecipes.commands.NotesCommand
-import com.bairei.springrecipes.domain.Notes
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class NotesCommandToNotesTest {
 

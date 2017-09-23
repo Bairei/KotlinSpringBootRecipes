@@ -22,10 +22,8 @@ class RecipeServiceImpl @Autowired constructor(private val recipeRepository: Rec
         return recipeOptional.get()
     }
 
-    override fun findAll(): Set<Recipe> {
-        return recipeRepository.findAll().map { it }.toHashSet()
-    }
-
+    override fun findAll(): Set<Recipe> = recipeRepository.findAll().map { it }.toHashSet()
+0
     override fun saveRecipeCommand(command: RecipeCommand?): RecipeCommand {
         val detachedRecipe = recipeCommandToRecipe.convert(command)
 

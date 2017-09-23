@@ -1,7 +1,6 @@
 package com.bairei.springrecipes.controllers
 
 import com.bairei.springrecipes.commands.RecipeCommand
-import com.bairei.springrecipes.domain.Difficulty
 import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.services.RecipeService
 import org.slf4j.Logger
@@ -9,7 +8,10 @@ import org.slf4j.LoggerFactory
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
-import org.springframework.web.bind.annotation.*
+import org.springframework.web.bind.annotation.GetMapping
+import org.springframework.web.bind.annotation.ModelAttribute
+import org.springframework.web.bind.annotation.PathVariable
+import org.springframework.web.bind.annotation.PostMapping
 
 /**
  * created by bairei on 21/09/17.

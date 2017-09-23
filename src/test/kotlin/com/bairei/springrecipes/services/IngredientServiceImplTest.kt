@@ -9,17 +9,14 @@ import com.bairei.springrecipes.domain.Ingredient
 import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.repositories.RecipeRepository
 import com.bairei.springrecipes.repositories.UnitOfMeasureRepository
-import com.nhaarman.mockito_kotlin.any
-import org.assertj.core.error.OptionalShouldContainInstanceOf
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
-import org.mockito.Mock
-import org.mockito.MockitoAnnotations
-import java.util.Optional
-
-import org.junit.Assert.assertEquals
 import org.mockito.ArgumentMatchers
+import org.mockito.Mock
 import org.mockito.Mockito.*
+import org.mockito.MockitoAnnotations
+import java.util.*
 
 
 class IngredientServiceImplTest {

@@ -3,14 +3,12 @@ package com.bairei.springrecipes.services
 import com.bairei.springrecipes.commands.IngredientCommand
 import com.bairei.springrecipes.converters.IngredientCommandToIngredient
 import com.bairei.springrecipes.converters.IngredientToIngredientCommand
-import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.repositories.RecipeRepository
 import com.bairei.springrecipes.repositories.UnitOfMeasureRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import java.util.stream.Collectors.toSet
 
 @Service
 class IngredientServiceImpl (private val ingredientToIngredientCommand: IngredientToIngredientCommand,
