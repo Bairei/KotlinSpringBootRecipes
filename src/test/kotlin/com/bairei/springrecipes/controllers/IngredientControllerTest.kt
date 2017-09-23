@@ -3,6 +3,7 @@ package com.bairei.springrecipes.controllers
 import com.bairei.springrecipes.commands.IngredientCommand
 import com.bairei.springrecipes.commands.RecipeCommand
 import com.bairei.springrecipes.commands.UnitOfMeasureCommand
+import com.bairei.springrecipes.domain.UnitOfMeasure
 import com.bairei.springrecipes.services.IngredientService
 import com.bairei.springrecipes.services.RecipeService
 import com.bairei.springrecipes.services.UnitOfMeasureService
@@ -20,6 +21,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.model
 import org.springframework.http.MediaType
 import com.nhaarman.mockito_kotlin.any
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.*
 
 
 class IngredientControllerTest {
@@ -77,6 +80,25 @@ class IngredientControllerTest {
     }
 
     @Test
+    fun testNewIngredientForm(){
+        // given
+        val recipeCommand = RecipeCommand()
+        recipeCommand.id = 1L
+
+        // when
+        `when`(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand)
+        `when`(unitOfMeasureService.listAllUoms()).thenReturn(emptyArray<UnitOfMeasureCommand>().toHashSet())
+
+        // then
+        mockMvc.perform(get("/recipe/1/ingredient/new"))
+                .andExpect(status().isOk)
+                .andExpect(view().name("recipe/ingredient/ingredientform"))
+                .andExpect(model().attributeExists("ingredient"))
+                .andExpect(model().attributeExists("uomList"))
+        verify(recipeService, times(1)).findCommandById(ArgumentMatchers.anyLong())
+    }
+
+    @Test
     @Throws(Exception::class)
     fun testUpdateIngredientForm() {
         //given
@@ -92,6 +114,15 @@ class IngredientControllerTest {
                 .andExpect(view().name("recipe/ingredient/ingredientform"))
                 .andExpect(model().attributeExists("ingredient"))
                 .andExpect(model().attributeExists("uomList"))
+    }
+
+    @Test
+    fun testDeleteIngredient(){
+        mockMvc.perform(get("/recipe/1/ingredient/2/delete"))
+                .andExpect(status().is3xxRedirection)
+                .andExpect(view().name("redirect:/recipe/1/ingredients/"))
+
+        verify(ingredientService, times(1)).deleteIngredientFromRecipeById(anyLong(), anyLong())
     }
 
     @Test

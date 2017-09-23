@@ -18,7 +18,9 @@ class IngredientToIngredientCommand @Autowired constructor(private val uomConver
         val ingredientCommand = IngredientCommand()
         ingredientCommand.id = source.id
         ingredientCommand.amount = source.amount
-        ingredientCommand.recipeId = source.recipe.id!!
+        if (source.recipe != null){
+            ingredientCommand.recipeId = source.recipe!!.id
+        }
         ingredientCommand.description = source.description
         ingredientCommand.uom = uomConverter.convert(source.uom)!!
         return ingredientCommand

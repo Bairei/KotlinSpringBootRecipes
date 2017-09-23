@@ -3,15 +3,14 @@ package com.bairei.springrecipes.services
 import com.bairei.springrecipes.commands.IngredientCommand
 import com.bairei.springrecipes.converters.IngredientCommandToIngredient
 import com.bairei.springrecipes.converters.IngredientToIngredientCommand
+import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.repositories.RecipeRepository
 import com.bairei.springrecipes.repositories.UnitOfMeasureRepository
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
-import com.bairei.springrecipes.domain.Recipe
-import com.bairei.springrecipes.domain.Ingredient
-import org.springframework.util.ClassUtils.isPresent
+import java.util.stream.Collectors.toSet
 
 @Service
 class IngredientServiceImpl (private val ingredientToIngredientCommand: IngredientToIngredientCommand,
@@ -71,17 +70,55 @@ class IngredientServiceImpl (private val ingredientToIngredientCommand: Ingredie
                         .orElseThrow { RuntimeException("UOM NOT FOUND") } //todo address this
             } else {
                 //add new Ingredient
-                recipe.addIngredient(ingredientCommandToIngredient.convert(command)!!)
+                val ingredient = ingredientCommandToIngredient.convert(command)
+                ingredient!!.recipe = recipe
+                recipe.addIngredient(ingredient)
             }
 
             val savedRecipe = recipeRepository.save(recipe)
 
-            //to do check for fail
-            return ingredientToIngredientCommand.convert(savedRecipe.ingredients.stream()
+
+            var savedIngredientOptional = savedRecipe.ingredients.stream()
                     .filter { recipeIngredients -> recipeIngredients.id.equals(command.id) }
                     .findFirst()
-                    .get())!!
-        }
 
+            if (!savedIngredientOptional.isPresent) {
+                // not totally safe, but best guess...
+                savedIngredientOptional = savedRecipe.ingredients.stream()
+                        .filter({ recipeIngredients -> recipeIngredients.description.equals(command.description)})
+                        .filter({ recipeIngredients -> recipeIngredients.amount.equals(command.amount) })
+                        .filter({ recipeIngredients -> recipeIngredients.uom.id.equals(command.uom.id)})
+                        .findFirst()
+            }
+
+            //todo check for fail
+           return ingredientToIngredientCommand.convert(savedIngredientOptional.get())
+
+        }
+    }
+
+    override fun deleteIngredientFromRecipeById(recipeId: Long, id: Long) {
+        val recipeOptional = recipeRepository.findById(recipeId)
+        if (recipeOptional.isPresent){
+            log.debug("filtering ingredients which id != $id")
+            val recipeToSave = recipeOptional.get()
+
+            val ingredientOptional = recipeToSave
+                    .ingredients.stream()
+                    .filter({ingredient -> ingredient.id.equals(id)})
+                    .findFirst()
+
+            if(ingredientOptional.isPresent){
+                log.debug("found ingredient with id $id")
+                val ingredientToDelete = ingredientOptional.get()
+                ingredientToDelete.recipe = null
+                recipeToSave.ingredients.remove(ingredientToDelete)
+                recipeRepository.save(recipeToSave)
+                return
+            }
+            log.debug("recipe with id $recipeId was not found")
+
+        }
+        log.info("no recipe with id = $recipeId was found")
     }
 }

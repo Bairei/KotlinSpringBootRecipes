@@ -1,6 +1,7 @@
 package com.bairei.springrecipes.controllers
 
 import com.bairei.springrecipes.commands.IngredientCommand
+import com.bairei.springrecipes.commands.UnitOfMeasureCommand
 import com.bairei.springrecipes.services.IngredientService
 import com.bairei.springrecipes.services.RecipeService
 import com.bairei.springrecipes.services.UnitOfMeasureService
@@ -43,6 +44,33 @@ class IngredientController constructor(private val recipeService: RecipeService,
         model.addAttribute("uomList", unitOfMeasureService.listAllUoms())
 
         return "recipe/ingredient/ingredientform"
+    }
+
+    @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/new")
+    fun newRecipe(@PathVariable recipeId: String, model: Model) : String {
+        // making sure we have a good id value
+        val recipeCommand = recipeService.findCommandById(recipeId.toLong())
+        // todo raise exception if null
+
+        // need to return back parent id for hidden form property
+        val ingredientCommand = IngredientCommand()
+        ingredientCommand.recipeId = recipeId.toLong()
+        model.addAttribute("ingredient", ingredientCommand)
+
+        // init uom
+        ingredientCommand.uom = UnitOfMeasureCommand()
+        model.addAttribute("uomList", unitOfMeasureService.listAllUoms())
+
+        return "recipe/ingredient/ingredientform"
+    }
+
+    @GetMapping
+    @RequestMapping("recipe/{recipeId}/ingredient/{id}/delete")
+    fun deleteRecipe(@PathVariable recipeId: String, @PathVariable id: String) : String{
+        ingredientService.deleteIngredientFromRecipeById(recipeId.toLong(), id.toLong())
+        log.debug("Deleting ingredient id: $id, recipeId: $recipeId")
+        return "redirect:/recipe/$recipeId/ingredients/"
     }
 
     @PostMapping

@@ -10,6 +10,7 @@ import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.repositories.RecipeRepository
 import com.bairei.springrecipes.repositories.UnitOfMeasureRepository
 import com.nhaarman.mockito_kotlin.any
+import org.assertj.core.error.OptionalShouldContainInstanceOf
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mock
@@ -17,6 +18,7 @@ import org.mockito.MockitoAnnotations
 import java.util.Optional
 
 import org.junit.Assert.assertEquals
+import org.mockito.ArgumentMatchers
 import org.mockito.Mockito.*
 
 
@@ -113,6 +115,26 @@ class IngredientServiceImplTest {
         verify(recipeRepository, times(1)).findById(anyLong())
         verify(recipeRepository, times(1)).save(any(Recipe::class.java))
 
+    }
+
+    @Test
+    fun testDeleteById(){
+        // given
+        val recipe = Recipe()
+        val ingredient = Ingredient()
+        ingredient.id = 3L
+        recipe.addIngredient(ingredient)
+        ingredient.recipe = recipe
+        val recipeOptional = Optional.of(recipe)
+
+        `when`(recipeRepository.findById(ArgumentMatchers.anyLong())).thenReturn(recipeOptional)
+
+        //when
+        ingredientService.deleteIngredientFromRecipeById(1L, 3L)
+
+        //then
+        verify(recipeRepository, times(1)).findById(ArgumentMatchers.anyLong())
+        verify(recipeRepository, times(1)).save(any(Recipe::class.java))
     }
 
 }
