@@ -1,12 +1,13 @@
 buildscript {
 	ext {
-		kotlinVersion = '1.1.4-3'
+		kotlinVersion = '1.2-M2'
 		springBootVersion = '2.0.0.M4'
 	}
 	repositories {
 		mavenCentral()
 		maven { url "https://repo.spring.io/snapshot" }
 		maven { url "https://repo.spring.io/milestone" }
+		maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.2" }
 	}
 	dependencies {
 		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
@@ -36,6 +37,7 @@ repositories {
 	mavenCentral()
 	maven { url "https://repo.spring.io/snapshot" }
 	maven { url "https://repo.spring.io/milestone" }
+	maven { url "http://dl.bintray.com/kotlin/kotlin-eap-1.2" }
 }
 
 configurations {
@@ -54,6 +56,7 @@ dependencies {
 	compile ('org.webjars:bootstrap:4.0.0-beta')
 	compile ('org.webjars:jquery:3.2.1')
 	compile ('org.webjars.bower:popper.js:1.12.5')
+	testCompile('com.nhaarman:mockito-kotlin:1.5.0')
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }

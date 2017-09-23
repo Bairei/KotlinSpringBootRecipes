@@ -20,4 +20,15 @@ data class Recipe (@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var i
               @JoinTable( name = "recipe_category", joinColumns = arrayOf(JoinColumn(name = "recipe_id")),
                                     inverseJoinColumns = arrayOf(JoinColumn(name = "category_id")))
               var categories: MutableSet<Category> = emptySet<Category>().toMutableSet()
-)
+){
+    fun addIngredient(ingredient: Ingredient): Recipe {
+        ingredient.recipe = this
+        this.ingredients.add(ingredient)
+        return this
+    }
+
+//    override fun toString(): String {
+//        return "[id=$id, description =$description, prepTime=$prepTime, cookTime=$cookTime, servings=$servings, source= $source," +
+//                " "
+//    }
+}

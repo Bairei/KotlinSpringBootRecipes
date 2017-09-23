@@ -8,7 +8,7 @@ data class Ingredient (@Id @GeneratedValue(strategy = GenerationType.AUTO) var i
                        var description: String = "",
                        var amount: BigDecimal = BigDecimal.ZERO,
                        @OneToOne (fetch = FetchType.EAGER) var uom: UnitOfMeasure = UnitOfMeasure(),
-                       @ManyToOne var recipe: Recipe? = null
+                       @ManyToOne var recipe: Recipe = Recipe()
 ){
     override fun equals(other: Any?): Boolean {
         if (this === other) return true

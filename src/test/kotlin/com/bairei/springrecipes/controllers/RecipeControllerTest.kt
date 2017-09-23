@@ -1,27 +1,21 @@
 package com.bairei.springrecipes.controllers
 
+import com.bairei.springrecipes.commands.RecipeCommand
 import com.bairei.springrecipes.domain.Recipe
 import com.bairei.springrecipes.services.RecipeService
 import org.junit.Before
 import org.junit.Test
-import org.mockito.ArgumentMatchers.*
+import org.mockito.ArgumentMatchers
+import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
-import org.springframework.test.web.servlet.MockMvc
-import org.springframework.test.web.servlet.setup.MockMvcBuilders
-import java.util.*
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.model
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
-import org.mockito.ArgumentMatchers.anyLong
-import com.bairei.springrecipes.commands.RecipeCommand
 import org.springframework.http.MediaType
-import org.springframework.http.MediaType.APPLICATION_FORM_URLENCODED
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.model
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.view
-import org.mockito.ArgumentMatchers.anyLong
+import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
+import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
 /**
  * created by bairei on 21/09/17.
@@ -76,7 +70,7 @@ class RecipeControllerTest {
         val command = RecipeCommand()
         command.id = 2L
 
-        `when`(recipeService.saveRecipeCommand(any())).thenReturn(command)
+        `when`(recipeService.saveRecipeCommand(ArgumentMatchers.anyObject())).thenReturn(command)
 
         mockMvc.perform(post("/recipe")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)

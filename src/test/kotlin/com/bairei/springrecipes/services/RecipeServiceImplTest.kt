@@ -13,6 +13,11 @@ import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
 import java.util.*
+import org.mockito.ArgumentMatchers.anyLong
+import com.bairei.springrecipes.commands.RecipeCommand
+
+
+
 
 class RecipeServiceImplTest {
 
@@ -63,6 +68,27 @@ class RecipeServiceImplTest {
         val recipeReturned = recipeService.findById(1L)
 
         assertNotNull("Null recipe returned", recipeReturned)
+        verify(recipeRepository, times(1)).findById(anyLong())
+        verify(recipeRepository, never()).findAll()
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun getRecipeCommandByIdTest() {
+        val recipe = Recipe()
+        recipe.id = 1L
+        val recipeOptional = Optional.of(recipe)
+
+        `when`(recipeRepository.findById(anyLong())).thenReturn(recipeOptional)
+
+        val recipeCommand = RecipeCommand()
+        recipeCommand.id = 1L
+
+        `when`(recipeToCommand.convert(any<Recipe>())).thenReturn(recipeCommand)
+
+        val commandById = recipeService.findCommandById(1L)
+
+        assertNotNull("Null recipe returned", commandById)
         verify(recipeRepository, times(1)).findById(anyLong())
         verify(recipeRepository, never()).findAll()
     }
