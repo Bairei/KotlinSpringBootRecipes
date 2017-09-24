@@ -15,9 +15,7 @@ import org.mockito.MockitoAnnotations
 import java.util.*
 import org.mockito.ArgumentMatchers.anyLong
 import com.bairei.springrecipes.commands.RecipeCommand
-
-
-
+import com.bairei.springrecipes.exceptions.NotFoundException
 
 class RecipeServiceImplTest {
 
@@ -42,7 +40,7 @@ class RecipeServiceImplTest {
 
     @Test
     @Throws(Exception::class)
-    fun getRecipes() {
+    fun getRecipesTest() {
 
         val recipe : Recipe = Recipe()
         val recipesData = HashSet<Recipe>()
@@ -70,6 +68,19 @@ class RecipeServiceImplTest {
         assertNotNull("Null recipe returned", recipeReturned)
         verify(recipeRepository, times(1)).findById(anyLong())
         verify(recipeRepository, never()).findAll()
+    }
+
+    @Test(expected = NotFoundException::class)
+    @Throws(Exception::class)
+    fun getRecipeByIdTestNotFound() {
+
+        val recipeOptional = Optional.empty<Recipe>()
+
+        `when`(recipeRepository.findById(anyLong())).thenReturn(recipeOptional)
+
+        val recipeReturned = recipeService.findById(1L)
+
+        //should go boom
     }
 
     @Test

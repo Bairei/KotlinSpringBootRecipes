@@ -2,6 +2,7 @@ package com.bairei.springrecipes.controllers
 
 import com.bairei.springrecipes.commands.RecipeCommand
 import com.bairei.springrecipes.domain.Recipe
+import com.bairei.springrecipes.exceptions.NotFoundException
 import com.bairei.springrecipes.services.RecipeService
 import org.junit.Before
 import org.junit.Test
@@ -16,6 +17,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 import com.nhaarman.mockito_kotlin.any
+import org.springframework.data.crossstore.ChangeSetPersister
 
 /**
  * created by bairei on 21/09/17.
@@ -51,6 +53,22 @@ class RecipeControllerTest {
                 .andExpect(status().isOk)
                 .andExpect(view().name("recipe/show"))
                 .andExpect(model().attributeExists("recipe"))
+    }
+
+    @Test
+    fun testGetRecipeNotFound(){
+        `when`(recipeService.findById(anyLong())).thenThrow(NotFoundException::class.java)
+
+        mockMvc.perform(get("/recipe/1/show"))
+                .andExpect(status().isNotFound)
+                .andExpect(view().name("404error"))
+    }
+
+    @Test
+    fun testGetRecipeNumberFormatException(){
+        mockMvc.perform(get("/recipe/dfhdfh/show"))
+                .andExpect(status().isBadRequest)
+                .andExpect(view().name("400error"))
     }
 
     @Test

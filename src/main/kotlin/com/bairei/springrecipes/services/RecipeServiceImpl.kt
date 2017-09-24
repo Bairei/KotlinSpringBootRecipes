@@ -4,6 +4,7 @@ import com.bairei.springrecipes.commands.RecipeCommand
 import com.bairei.springrecipes.converters.RecipeCommandToRecipe
 import com.bairei.springrecipes.converters.RecipeToRecipeCommand
 import com.bairei.springrecipes.domain.Recipe
+import com.bairei.springrecipes.exceptions.NotFoundException
 import com.bairei.springrecipes.repositories.RecipeRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -17,7 +18,8 @@ class RecipeServiceImpl @Autowired constructor(private val recipeRepository: Rec
     override fun findById(id: Long): Recipe {
         val recipeOptional = recipeRepository.findById(id)
         if (!recipeOptional.isPresent){
-            throw RuntimeException("Recipe not found")
+            // throwRuntimeException("Recipe not found")
+            throw NotFoundException("Recipe not found. For ID value: $id")
         }
         return recipeOptional.get()
     }
@@ -32,11 +34,7 @@ class RecipeServiceImpl @Autowired constructor(private val recipeRepository: Rec
     }
 
     @Transactional
-    override fun findCommandById(id: Long): RecipeCommand? {
-        return recipeToRecipeCommand.convert(findById(id))
-    }
+    override fun findCommandById(id: Long): RecipeCommand? = recipeToRecipeCommand.convert(findById(id))
 
-    override fun deleteById(id: Long) {
-        recipeRepository.deleteById(id)
-    }
+    override fun deleteById(id: Long) = recipeRepository.deleteById(id)
 }
