@@ -10,8 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.http.HttpStatus
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.ModelAndView
+import javax.validation.Valid
 
 /**
  * created by bairei on 21/09/17.
@@ -33,19 +35,26 @@ class RecipeController @Autowired constructor(val recipeService: RecipeService){
     @GetMapping("recipe/new")
     fun newRecipe(model : Model) : String {
         model.addAttribute("recipe", Recipe())
-        return "recipe/recipeform"
+        return RECIPE_RECIPEFORM_URL
     }
 
 
     @GetMapping("recipe/{id}/update")
     fun updateRecipe (@PathVariable id: String, model: Model): String {
         model.addAttribute("recipe", recipeService.findCommandById(id.toLong()))
-        return "recipe/recipeform"
+        return RECIPE_RECIPEFORM_URL
     }
 
 
     @PostMapping("recipe")
-    fun saveOrUpdate(@ModelAttribute command : RecipeCommand) : String {
+    fun saveOrUpdate(@Valid @ModelAttribute("recipe") command : RecipeCommand, bindingResult: BindingResult) : String {
+
+        if(bindingResult.hasErrors()){
+            bindingResult.allErrors.forEach({objecterror -> log.debug(objecterror.toString())})
+
+            return RECIPE_RECIPEFORM_URL
+        }
+
         val savedCommand = recipeService.saveRecipeCommand(command)
         return "redirect:/recipe/${savedCommand.id}/show"
     }
@@ -69,14 +78,8 @@ class RecipeController @Autowired constructor(val recipeService: RecipeService){
         return modelAndView
     }
 
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-    @ExceptionHandler(NumberFormatException::class)
-    fun numberFormatExceptionHandler(ex: Exception) : ModelAndView {
-        log.error("Handling number format exception")
-        log.error(ex.message)
-        val modelAndView = ModelAndView()
-        modelAndView.viewName = "400error"
-        modelAndView.addObject("exception", ex)
-        return modelAndView
+    companion object {
+        val RECIPE_RECIPEFORM_URL = "recipe/recipeform"
     }
+
 }

@@ -37,7 +37,8 @@ class ImageControllerTest {
         MockitoAnnotations.initMocks(this)
 
         controller = ImageController(imageService, recipeService)
-        mockMvc = MockMvcBuilders.standaloneSetup(controller).build()
+        mockMvc = MockMvcBuilders.standaloneSetup(controller)
+                .setControllerAdvice(ControllerExceptionHandler()).build()
     }
 
     @Test
@@ -98,5 +99,12 @@ class ImageControllerTest {
         val responseBytes = response.contentAsByteArray
 
         assertEquals(s.toByteArray().size, responseBytes.size)
+    }
+
+    @Test
+    fun testGetImageNumberFormatException() {
+        mockMvc.perform(get("/recipe/asgsa/recipeimage"))
+                .andExpect(status().isBadRequest)
+                .andExpect(view().name("400error"))
     }
 }

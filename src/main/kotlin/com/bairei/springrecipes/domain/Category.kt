@@ -3,7 +3,7 @@ package com.bairei.springrecipes.domain
 import javax.persistence.*
 
 @Entity
-data class Category (
+class Category (
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long = 0,
         var description: String = "",
         @ManyToMany(mappedBy = "categories")

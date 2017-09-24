@@ -56,7 +56,7 @@ class IngredientServiceImpl (private val ingredientToIngredientCommand: Ingredie
             val ingredientOptional = recipe
                     .ingredients
                     .stream()
-                    .filter { (id) -> id.equals(command.id) }
+                    .filter { ingredient -> ingredient.id.equals(command.id) }
                     .findFirst()
 
             if (ingredientOptional.isPresent) {

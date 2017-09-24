@@ -3,7 +3,7 @@ package com.bairei.springrecipes.domain
 import javax.persistence.*
 
 @Entity
-data class Notes(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long = 0,
+class Notes(@Id @GeneratedValue(strategy = GenerationType.IDENTITY) var id: Long = 0,
             @OneToOne var recipe: Recipe? = null,
             @Lob var recipeNotes: String = ""
 ){
