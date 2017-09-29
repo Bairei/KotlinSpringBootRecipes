@@ -53,6 +53,7 @@ dependencies {
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
 	runtime('org.springframework.boot:spring-boot-devtools')
+	compile("mysql:mysql-connector-java")
 	runtime('com.h2database:h2')
 	compile ('org.webjars:bootstrap:4.0.0-beta')
 	compile ('org.webjars:jquery:3.2.1')
@@ -61,12 +62,3 @@ dependencies {
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
 }
-
-jacocoTestReport {
-	reports {
-		xml.enabled true
-		html.enabled false
-	}
-}
-
-check.dependsOn jacocoTestReport
