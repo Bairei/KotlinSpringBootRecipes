@@ -14,6 +14,7 @@ import org.springframework.test.context.junit4.SpringRunner
 @RunWith(SpringRunner::class)
 @DataJpaTest
 class UnitOfMeasureRepositoryIT {
+
     @Autowired
     lateinit var unitOfMeasureRepository : UnitOfMeasureRepository
 
