@@ -1,7 +1,7 @@
 buildscript {
 	ext {
 		kotlinVersion = '1.2.0-beta-31'
-		springBootVersion = '2.0.0.M3'
+		springBootVersion = '2.0.0.M4'
 	}
 	repositories {
 		mavenCentral()
@@ -50,10 +50,10 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('org.springframework.boot:spring-boot-starter-jdbc')
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
 	compile("org.jetbrains.kotlin:kotlin-reflect:${kotlinVersion}")
 	runtime('org.springframework.boot:spring-boot-devtools')
-	compile("mysql:mysql-connector-java")
 	runtime('com.h2database:h2')
 	compile ('org.webjars:bootstrap:4.0.0-beta')
 	compile ('org.webjars:jquery:3.2.1')
