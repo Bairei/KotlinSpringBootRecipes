@@ -57,16 +57,16 @@ class RecipeServiceImplTest {
     @Test
     fun getRecipeByIdTest() {
         val recipe = Recipe()
-        recipe.id = 1L
+        recipe.id = "1"
         val recipeOptional = Optional.of(recipe)
 
 
-        `when`(recipeRepository.findById(ArgumentMatchers.anyLong())).thenReturn(recipeOptional)
+        `when`(recipeRepository.findById(anyString())).thenReturn(recipeOptional)
 
-        val recipeReturned = recipeService.findById(1L)
+        val recipeReturned = recipeService.findById("1")
 
         assertNotNull("Null recipe returned", recipeReturned)
-        verify(recipeRepository, times(1)).findById(anyLong())
+        verify(recipeRepository, times(1)).findById(anyString())
         verify(recipeRepository, never()).findAll()
     }
 
@@ -76,9 +76,9 @@ class RecipeServiceImplTest {
 
         val recipeOptional = Optional.empty<Recipe>()
 
-        `when`(recipeRepository.findById(anyLong())).thenReturn(recipeOptional)
+        `when`(recipeRepository.findById(anyString())).thenReturn(recipeOptional)
 
-        val recipeReturned = recipeService.findById(1L)
+        val recipeReturned = recipeService.findById("1")
 
         //should go boom
     }
@@ -87,27 +87,27 @@ class RecipeServiceImplTest {
     @Throws(Exception::class)
     fun getRecipeCommandByIdTest() {
         val recipe = Recipe()
-        recipe.id = 1L
+        recipe.id = "1"
         val recipeOptional = Optional.of(recipe)
 
-        `when`(recipeRepository.findById(anyLong())).thenReturn(recipeOptional)
+        `when`(recipeRepository.findById(anyString())).thenReturn(recipeOptional)
 
         val recipeCommand = RecipeCommand()
-        recipeCommand.id = 1L
+        recipeCommand.id = "1"
 
         `when`(recipeToCommand.convert(any<Recipe>())).thenReturn(recipeCommand)
 
-        val commandById = recipeService.findCommandById(1L)
+        val commandById = recipeService.findCommandById("1")
 
         assertNotNull("Null recipe returned", commandById)
-        verify(recipeRepository, times(1)).findById(anyLong())
+        verify(recipeRepository, times(1)).findById(anyString())
         verify(recipeRepository, never()).findAll()
     }
 
     @Test
     fun testDeleteById() {
         // given
-        val idToDelete = 2L
+        val idToDelete = "2"
 
         // when
         recipeService.deleteById(idToDelete)

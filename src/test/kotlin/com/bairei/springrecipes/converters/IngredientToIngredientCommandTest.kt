@@ -46,8 +46,8 @@ class IngredientToIngredientCommandTest {
         //when
         val ingredientCommand = converter.convert(ingredient)
         //then
-        assertEquals(ingredientCommand!!.uom.id, 0) // Assert that has uom
-        assertEquals(ingredientCommand.uom.description, "") // with default values (id = 0, desc ="")
+        assertEquals(ingredientCommand!!.uom.id, "") // Assert that has uom
+        assertEquals(ingredientCommand.uom.description, "") // with default values (id = "", desc ="")
         assertEquals(ID_VALUE, ingredientCommand.id)
         // assertEquals(RECIPE, ingredientCommand.get);
         assertEquals(AMOUNT, ingredientCommand.amount)
@@ -84,7 +84,7 @@ class IngredientToIngredientCommandTest {
         val RECIPE = Recipe()
         val AMOUNT = BigDecimal("1")
         val DESCRIPTION = "Cheeseburger"
-        val UOM_ID = 2L
-        val ID_VALUE = 1L
+        val UOM_ID = "2"
+        val ID_VALUE = "1"
     }
 }

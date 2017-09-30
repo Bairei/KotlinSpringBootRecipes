@@ -49,7 +49,7 @@ class IndexControllerTest {
         recipes.add(Recipe())
 
         val recipe : Recipe = Recipe()
-        recipe.id = 4L
+        recipe.id = "4"
         recipes.add(recipe)
 
         `when`(recipeService.findAll()).thenReturn(recipes)

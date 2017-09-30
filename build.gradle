@@ -1,7 +1,7 @@
 buildscript {
 	ext {
-		kotlinVersion = '1.2-M2'
-		springBootVersion = '2.0.0.M4'
+		kotlinVersion = '1.2.0-beta-31'
+		springBootVersion = '2.0.0.M3'
 	}
 	repositories {
 		mavenCentral()
@@ -47,7 +47,7 @@ configurations {
 
 dependencies {
 	compile('org.springframework.boot:spring-boot-starter-actuator')
-	compile('org.springframework.boot:spring-boot-starter-data-jpa')
+	compile('org.springframework.boot:spring-boot-starter-data-mongodb')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
 	compile("org.jetbrains.kotlin:kotlin-stdlib-jre8:${kotlinVersion}")
@@ -61,4 +61,12 @@ dependencies {
 	testCompile('com.nhaarman:mockito-kotlin:1.5.0')
 	providedRuntime('org.springframework.boot:spring-boot-starter-tomcat')
 	testCompile('org.springframework.boot:spring-boot-starter-test')
+}
+
+//export test coverage
+jacocoTestReport {
+	reports {
+		xml.enabled true
+		html.enabled false
+	}
 }

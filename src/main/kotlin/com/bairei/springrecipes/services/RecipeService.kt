@@ -8,9 +8,9 @@ import kotlin.collections.HashSet
 interface RecipeService {
     fun findAll() : Set<Recipe>
 
-    fun findById(id: Long) : Recipe
+    fun findById(id: String) : Recipe
 
     fun saveRecipeCommand(command: RecipeCommand?): RecipeCommand
-    fun findCommandById(id: Long): RecipeCommand?
-    fun deleteById(id:Long)
+    fun findCommandById(id: String): RecipeCommand?
+    fun deleteById(id:String)
 }

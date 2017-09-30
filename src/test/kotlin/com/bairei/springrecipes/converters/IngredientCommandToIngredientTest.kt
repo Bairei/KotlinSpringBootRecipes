@@ -70,7 +70,7 @@ class IngredientCommandToIngredientTest {
 
         //then
         assertNotNull(ingredient!!)
-        assertEquals(ingredient.uom.id, 0)  // Expect initialized
+        assertEquals(ingredient.uom.id, "")  // Expect initialized
         assertEquals(ingredient.uom.description, "") // UOM with default id and desc values
         assertEquals(ID_VALUE, ingredient.id)
         assertEquals(AMOUNT, ingredient.amount)
@@ -83,8 +83,8 @@ class IngredientCommandToIngredientTest {
         val RECIPE = Recipe()
         val AMOUNT = BigDecimal("1")
         val DESCRIPTION = "Cheeseburger"
-        val ID_VALUE = 1L
-        val UOM_ID = 2L
+        val ID_VALUE = "1"
+        val UOM_ID = "2"
     }
 
 }

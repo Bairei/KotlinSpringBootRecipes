@@ -26,7 +26,7 @@ class RecipeController @Autowired constructor(val recipeService: RecipeService){
 
     @GetMapping("/recipe/{id}/show")
     fun showById(@PathVariable id: String, model:Model) : String {
-        model.addAttribute("recipe", recipeService.findById(id.toLong()))
+        model.addAttribute("recipe", recipeService.findById(id))
 
         return "recipe/show"
     }
@@ -41,7 +41,7 @@ class RecipeController @Autowired constructor(val recipeService: RecipeService){
 
     @GetMapping("recipe/{id}/update")
     fun updateRecipe (@PathVariable id: String, model: Model): String {
-        model.addAttribute("recipe", recipeService.findCommandById(id.toLong()))
+        model.addAttribute("recipe", recipeService.findCommandById(id))
         return RECIPE_RECIPEFORM_URL
     }
 
@@ -62,7 +62,7 @@ class RecipeController @Autowired constructor(val recipeService: RecipeService){
 
     @GetMapping("recipe/{id}/delete")
     fun deleteRecipe(@PathVariable id: String): String{
-        recipeService.deleteById(id.toLong())
+        recipeService.deleteById(id)
         log.debug("Deleting id: " + id)
         return "redirect:/"
     }

@@ -49,7 +49,7 @@ class UnitOfMeasureCommandToUnitOfMeasureTest {
     companion object {
 
         val DESCRIPTION = "description"
-        val LONG_VALUE = 1L
+        val LONG_VALUE = "1"
     }
 
 }

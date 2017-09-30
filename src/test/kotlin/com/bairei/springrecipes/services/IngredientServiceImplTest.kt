@@ -60,31 +60,31 @@ class IngredientServiceImplTest {
     fun findByRecipeIdAndIngredientIdHappyPath() {
         //given
         val recipe = Recipe()
-        recipe.id = 1L
+        recipe.id = "1"
 
         val ingredient1 = Ingredient()
-        ingredient1.id = 1L
+        ingredient1.id = "1"
 
         val ingredient2 = Ingredient()
-        ingredient2.id = 1L
+        ingredient2.id = "1"
 
         val ingredient3 = Ingredient()
-        ingredient3.id = 3L
+        ingredient3.id = "3"
 
         recipe.addIngredient(ingredient1)
         recipe.addIngredient(ingredient2)
         recipe.addIngredient(ingredient3)
         val recipeOptional = Optional.of(recipe)
 
-        `when`(recipeRepository.findById(anyLong())).thenReturn(recipeOptional)
+        `when`(recipeRepository.findById(anyString())).thenReturn(recipeOptional)
 
         //then
-        val ingredientCommand = ingredientService.findByRecipeIdAndIngredientId(1L, 3L)
+        val ingredientCommand = ingredientService.findByRecipeIdAndIngredientId("1", "3")
 
         //when
-        assertEquals(3L, ingredientCommand.id)
-        assertEquals(1L, ingredientCommand.recipeId)
-        verify<RecipeRepository>(recipeRepository, times(1)).findById(anyLong())
+        assertEquals("3", ingredientCommand.id)
+        assertEquals("1", ingredientCommand.recipeId)
+        verify<RecipeRepository>(recipeRepository, times(1)).findById(anyString())
     }
 
     @Test
@@ -92,24 +92,24 @@ class IngredientServiceImplTest {
     fun testSaveRecipeCommand() {
         //given
         val command = IngredientCommand()
-        command.id = 3L
-        command.recipeId = 2L
+        command.id = "3"
+        command.recipeId = "2"
 
         val recipeOptional = Optional.of(Recipe())
 
         val savedRecipe = Recipe()
         savedRecipe.addIngredient(Ingredient())
-        savedRecipe.ingredients.iterator().next().id = 3L
+        savedRecipe.ingredients.iterator().next().id = "3"
 
-        `when`(recipeRepository.findById(anyLong())).thenReturn(recipeOptional)
+        `when`(recipeRepository.findById(anyString())).thenReturn(recipeOptional)
         `when`<Recipe>(recipeRepository.save(com.nhaarman.mockito_kotlin.any())).thenReturn(savedRecipe)
 
         //when
         val savedCommand = ingredientService.saveIngredientCommand(command)
 
         //then
-        assertEquals(java.lang.Long.valueOf(3L), savedCommand!!.id)
-        verify(recipeRepository, times(1)).findById(anyLong())
+        assertEquals("3", savedCommand!!.id)
+        verify(recipeRepository, times(1)).findById(anyString())
         verify(recipeRepository, times(1)).save(any(Recipe::class.java))
 
     }
@@ -119,18 +119,18 @@ class IngredientServiceImplTest {
         // given
         val recipe = Recipe()
         val ingredient = Ingredient()
-        ingredient.id = 3L
+        ingredient.id = "3"
         recipe.addIngredient(ingredient)
         ingredient.recipe = recipe
         val recipeOptional = Optional.of(recipe)
 
-        `when`(recipeRepository.findById(ArgumentMatchers.anyLong())).thenReturn(recipeOptional)
+        `when`(recipeRepository.findById(anyString())).thenReturn(recipeOptional)
 
         //when
-        ingredientService.deleteIngredientFromRecipeById(1L, 3L)
+        ingredientService.deleteIngredientFromRecipeById("1", "3")
 
         //then
-        verify(recipeRepository, times(1)).findById(ArgumentMatchers.anyLong())
+        verify(recipeRepository, times(1)).findById(anyString())
         verify(recipeRepository, times(1)).save(any(Recipe::class.java))
     }
 

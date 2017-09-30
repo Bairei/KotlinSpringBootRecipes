@@ -1,11 +1,9 @@
 package com.bairei.springrecipes.converters
 
-import com.bairei.springrecipes.commands.RecipeCommand
 import com.bairei.springrecipes.domain.*
+import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class RecipeToRecipeCommandTest {
 
@@ -93,7 +91,7 @@ class RecipeToRecipeCommandTest {
 
     companion object {
 
-        val RECIPE_ID = 1L
+        val RECIPE_ID = "1"
         val COOK_TIME = Integer.valueOf("5")
         val PREP_TIME = Integer.valueOf("7")
         val DESCRIPTION = "My Recipe"
@@ -102,11 +100,11 @@ class RecipeToRecipeCommandTest {
         val SERVINGS = Integer.valueOf("3")
         val SOURCE = "Source"
         val URL = "Some URL"
-        val CAT_ID_1 = 1L
-        val CAT_ID2 = 2L
-        val INGRED_ID_1 = 3L
-        val INGRED_ID_2 = 4L
-        val NOTES_ID = 9L
+        val CAT_ID_1 = "1"
+        val CAT_ID2 = "2"
+        val INGRED_ID_1 = "3"
+        val INGRED_ID_2 = "4"
+        val NOTES_ID = "9"
     }
 
 }

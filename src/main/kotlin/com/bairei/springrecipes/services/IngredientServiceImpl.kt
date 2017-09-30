@@ -19,7 +19,7 @@ class IngredientServiceImpl (private val ingredientToIngredientCommand: Ingredie
 
     private val log : Logger = LoggerFactory.getLogger(this::class.java)
 
-    override fun findByRecipeIdAndIngredientId(recipeId: Long, ingredientId: Long) : IngredientCommand {
+    override fun findByRecipeIdAndIngredientId(recipeId: String, ingredientId: String): IngredientCommand {
         val recipeOptional = recipeRepository.findById(recipeId)
 
         if (!recipeOptional.isPresent){
@@ -95,7 +95,7 @@ class IngredientServiceImpl (private val ingredientToIngredientCommand: Ingredie
         }
     }
 
-    override fun deleteIngredientFromRecipeById(recipeId: Long, id: Long) {
+    override fun deleteIngredientFromRecipeById(recipeId: String, id: String) {
         val recipeOptional = recipeRepository.findById(recipeId)
         if (recipeOptional.isPresent){
             log.debug("filtering ingredients which id != $id")

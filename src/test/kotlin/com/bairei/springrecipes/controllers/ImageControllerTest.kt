@@ -6,6 +6,7 @@ import com.bairei.springrecipes.services.RecipeService
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
+import org.mockito.ArgumentMatchers
 import org.mockito.ArgumentMatchers.anyLong
 import org.mockito.Mock
 import org.mockito.Mockito.*
@@ -46,16 +47,16 @@ class ImageControllerTest {
     fun getImageForm() {
         //given
         val command = RecipeCommand()
-        command.id = 1L
+        command.id = 1L.toString()
 
-        `when`(recipeService.findCommandById(anyLong())).thenReturn(command)
+        `when`(recipeService.findCommandById(anyString())).thenReturn(command)
 
         //when
         mockMvc.perform(get("/recipe/1/image"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipe"))
 
-        verify(recipeService, times(1)).findCommandById(anyLong())
+        verify(recipeService, times(1)).findCommandById(anyString())
 
     }
 
@@ -69,14 +70,14 @@ class ImageControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/recipe/1/show"))
 
-        verify(imageService, times(1)).saveImageFile(anyLong(), com.nhaarman.mockito_kotlin.any())
+        verify(imageService, times(1)).saveImageFile(anyString(), com.nhaarman.mockito_kotlin.any())
     }
 
     @Test
     fun renderImageFromDB(){
         // given
         val command = RecipeCommand()
-        command.id = 1L
+        command.id = "1"
 
         val s = "fake image test"
         val bytesBoxed = ByteArray(s.toByteArray().size)
@@ -89,7 +90,7 @@ class ImageControllerTest {
 
         command.image = bytesBoxed
 
-        `when`(recipeService.findCommandById(anyLong())).thenReturn(command)
+        `when`(recipeService.findCommandById(anyString())).thenReturn(command)
 
         //when
         val response: MockHttpServletResponse = mockMvc.perform(get("/recipe/1/recipeimage"))
@@ -101,10 +102,4 @@ class ImageControllerTest {
         assertEquals(s.toByteArray().size, responseBytes.size)
     }
 
-    @Test
-    fun testGetImageNumberFormatException() {
-        mockMvc.perform(get("/recipe/asgsa/recipeimage"))
-                .andExpect(status().isBadRequest)
-                .andExpect(view().name("400error"))
-    }
 }

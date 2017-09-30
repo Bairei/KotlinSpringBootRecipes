@@ -18,7 +18,7 @@ class CategoryTest {
     @Test
     @Throws(Exception::class)
     fun getId() {
-        val idValue = 4L
+        val idValue = "4"
         category.id = idValue
         assertEquals(idValue, category.id)
     }

@@ -49,9 +49,9 @@ class RecipeControllerTest {
     fun testGetRecipe() {
 
         val recipe = Recipe()
-        recipe.id = 1L
+        recipe.id = "1"
 
-        `when`(recipeService.findById(anyLong())).thenReturn(recipe)
+        `when`(recipeService.findById(anyString())).thenReturn(recipe)
 
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isOk)
@@ -61,18 +61,11 @@ class RecipeControllerTest {
 
     @Test
     fun testGetRecipeNotFound(){
-        `when`(recipeService.findById(anyLong())).thenThrow(NotFoundException::class.java)
+        `when`(recipeService.findById(anyString())).thenThrow(NotFoundException::class.java)
 
         mockMvc.perform(get("/recipe/1/show"))
                 .andExpect(status().isNotFound)
                 .andExpect(view().name("404error"))
-    }
-
-    @Test
-    fun testGetRecipeNumberFormatException(){
-        mockMvc.perform(get("/recipe/dfhdfh/show"))
-                .andExpect(status().isBadRequest)
-                .andExpect(view().name("400error"))
     }
 
     @Test
@@ -90,7 +83,7 @@ class RecipeControllerTest {
     @Throws(Exception::class)
     fun testPostNewRecipeForm() {
         val command = RecipeCommand()
-        command.id = 2L
+        command.id = "2"
 
         `when`(recipeService.saveRecipeCommand(any())).thenReturn(command)
 
@@ -111,7 +104,7 @@ class RecipeControllerTest {
     @Throws(Exception::class)
     fun testPostNewRecipeFormValidationFail() {
         val command = RecipeCommand()
-        command.id = 2L
+        command.id = "2"
 
         `when`(recipeService.saveRecipeCommand(any())).thenReturn(command)
 
@@ -130,9 +123,9 @@ class RecipeControllerTest {
     @Throws(Exception::class)
     fun testGetUpdateView() {
         val command = RecipeCommand()
-        command.id = 2L
+        command.id = "2"
 
-        `when`(recipeService.findCommandById(anyLong())).thenReturn(command)
+        `when`(recipeService.findCommandById(anyString())).thenReturn(command)
 
         mockMvc.perform(get("/recipe/1/update"))
                 .andExpect(status().isOk)
@@ -145,6 +138,6 @@ class RecipeControllerTest {
         mockMvc.perform(get("/recipe/1/delete"))
                 .andExpect(status().is3xxRedirection)
                 .andExpect(view().name("redirect:/"))
-        verify(recipeService, times(1)).deleteById(anyLong())
+        verify(recipeService, times(1)).deleteById(anyString())
     }
 }

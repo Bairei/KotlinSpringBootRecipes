@@ -46,7 +46,7 @@ class CategoryCommandToCategoryTest {
 
     companion object {
 
-        val ID_VALUE = 1L
+        val ID_VALUE = "1"
         val DESCRIPTION = "description"
     }
 

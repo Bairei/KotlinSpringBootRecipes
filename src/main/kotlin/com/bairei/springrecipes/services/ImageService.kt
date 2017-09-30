@@ -4,5 +4,5 @@ import org.springframework.web.multipart.MultipartFile
 
 interface ImageService {
 
-    fun saveImageFile(id: Long, file: MultipartFile)
+    fun saveImageFile(id: String, file: MultipartFile)
 }

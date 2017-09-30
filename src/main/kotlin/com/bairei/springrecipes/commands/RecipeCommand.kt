@@ -8,7 +8,7 @@ import javax.validation.constraints.Min
 import javax.validation.constraints.Size
 
 class RecipeCommand (
-        var id: Long = 0,
+        var id: String = "",
         @get:NotBlank @get:Size(min = 3, max = 255) var description: String = "",
         @get:Min(1) @get:Max(999) var prepTime: Int = 0,
         @get:Min(1) @get:Max(999) var cookTime: Int = 0,

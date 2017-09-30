@@ -24,7 +24,7 @@ class IngredientController constructor(private val recipeService: RecipeService,
         log.debug("Getting ingredient list for recipe id " + recipeId)
 
         // use command object to avoid lazy load errors in Thymeleaf.
-        model.addAttribute("recipe", recipeService.findCommandById(recipeId.toLong()))
+        model.addAttribute("recipe", recipeService.findCommandById(recipeId))
         return "recipe/ingredient/list"
     }
 
@@ -32,7 +32,7 @@ class IngredientController constructor(private val recipeService: RecipeService,
     @GetMapping("/recipe/{recipeId}/ingredient/{id}/show")
     fun showRecipeIngredient(@PathVariable recipeId: String,
                              @PathVariable id: String, model: Model) : String{
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId.toLong(), id.toLong()))
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id))
         return "recipe/ingredient/show"
     }
 
@@ -40,7 +40,7 @@ class IngredientController constructor(private val recipeService: RecipeService,
     @GetMapping("/recipe/{recipeId}/ingredient/{id}/update")
     fun updateRecipeIngredient(@PathVariable recipeId: String, @PathVariable id: String,
                                model: Model) : String{
-        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId.toLong(), id.toLong()))
+        model.addAttribute("ingredient", ingredientService.findByRecipeIdAndIngredientId(recipeId, id))
         model.addAttribute("uomList", unitOfMeasureService.listAllUoms())
 
         return "recipe/ingredient/ingredientform"
@@ -50,12 +50,12 @@ class IngredientController constructor(private val recipeService: RecipeService,
     @GetMapping("recipe/{recipeId}/ingredient/new")
     fun newRecipe(@PathVariable recipeId: String, model: Model) : String {
         // making sure we have a good id value
-        val recipeCommand = recipeService.findCommandById(recipeId.toLong())
+        val recipeCommand = recipeService.findCommandById(recipeId)
         // todo raise exception if null
 
         // need to return back parent id for hidden form property
         val ingredientCommand = IngredientCommand()
-        ingredientCommand.recipeId = recipeId.toLong()
+        ingredientCommand.recipeId = recipeId
         model.addAttribute("ingredient", ingredientCommand)
 
         // init uom
@@ -68,7 +68,7 @@ class IngredientController constructor(private val recipeService: RecipeService,
 
     @GetMapping("recipe/{recipeId}/ingredient/{id}/delete")
     fun deleteRecipe(@PathVariable recipeId: String, @PathVariable id: String) : String{
-        ingredientService.deleteIngredientFromRecipeById(recipeId.toLong(), id.toLong())
+        ingredientService.deleteIngredientFromRecipeById(recipeId, id)
         log.debug("Deleting ingredient id: $id, recipeId: $recipeId")
         return "redirect:/recipe/$recipeId/ingredients/"
     }

@@ -33,7 +33,7 @@ class ImageServiceImplTest {
     @Throws(Exception::class)
     fun saveImageFile() {
         //given
-        val id = 1L
+        val id = "1"
         val multipartFile = MockMultipartFile("imagefile", "testing.txt", "text/plain",
                 "Spring Framework Guru".toByteArray())
 
@@ -41,7 +41,7 @@ class ImageServiceImplTest {
         recipe.id = id
         val recipeOptional = Optional.of(recipe)
 
-        `when`(recipeRepository.findById(ArgumentMatchers.anyLong())).thenReturn(recipeOptional)
+        `when`(recipeRepository.findById(anyString())).thenReturn(recipeOptional)
 
         val argumentCaptor = ArgumentCaptor.forClass(Recipe::class.java)
 

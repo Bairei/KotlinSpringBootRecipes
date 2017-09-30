@@ -19,7 +19,7 @@ class ImageController (private val imageService: ImageService,
 
     @GetMapping("/recipe/{id}/image")
     fun showUploadForm(@PathVariable id: String, model: Model): String{
-        model.addAttribute("recipe", recipeService.findCommandById(id.toLong()))
+        model.addAttribute("recipe", recipeService.findCommandById(id))
 
         return "recipe/imageuploadform"
     }
@@ -27,14 +27,14 @@ class ImageController (private val imageService: ImageService,
     @PostMapping("/recipe/{id}/image")
     fun handleImagePost(@PathVariable id: String, @RequestParam("imagefile") file: MultipartFile): String{
 
-        imageService.saveImageFile(id.toLong(), file)
+        imageService.saveImageFile(id, file)
 
         return "redirect:/recipe/$id/show"
     }
 
     @GetMapping("recipe/{id}/recipeimage")
     fun renderImageFromDB(@PathVariable id: String, response: HttpServletResponse){
-        val recipeCommand = recipeService.findCommandById(id.toLong())
+        val recipeCommand = recipeService.findCommandById(id)
 
         if(recipeCommand!!.image.isNotEmpty()){
             val byteArray = ByteArray(recipeCommand.image.size)

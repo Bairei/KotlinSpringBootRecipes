@@ -36,11 +36,11 @@ class UnitOfMeasureServiceImplTest {
         //given
         val unitOfMeasures = HashSet<UnitOfMeasure>()
         val uom1 = UnitOfMeasure()
-        uom1.id = 1L
+        uom1.id = "1"
         unitOfMeasures.add(uom1)
 
         val uom2 = UnitOfMeasure()
-        uom2.id = 2L
+        uom2.id = "2"
         unitOfMeasures.add(uom2)
 
         `when`(unitOfMeasureRepository.findAll()).thenReturn(unitOfMeasures)

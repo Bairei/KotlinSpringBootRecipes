@@ -12,7 +12,7 @@ class ImageServiceImpl (private val recipeRepository: RecipeRepository) : ImageS
 
     private val log : Logger = LoggerFactory.getLogger(ImageServiceImpl::class.java)
 
-    override fun saveImageFile(id: Long, file: MultipartFile) {
+    override fun saveImageFile(id: String, file: MultipartFile) {
 
         try {
             val recipe = recipeRepository.findById(id).get()

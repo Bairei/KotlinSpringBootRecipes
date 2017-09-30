@@ -15,7 +15,7 @@ class RecipeServiceImpl @Autowired constructor(private val recipeRepository: Rec
                                                private val recipeCommandToRecipe: RecipeCommandToRecipe,
                                                private val recipeToRecipeCommand: RecipeToRecipeCommand) : RecipeService {
 
-    override fun findById(id: Long): Recipe {
+    override fun findById(id: String): Recipe {
         val recipeOptional = recipeRepository.findById(id)
         if (!recipeOptional.isPresent){
             // throwRuntimeException("Recipe not found")
@@ -34,7 +34,7 @@ class RecipeServiceImpl @Autowired constructor(private val recipeRepository: Rec
     }
 
     @Transactional
-    override fun findCommandById(id: Long): RecipeCommand? = recipeToRecipeCommand.convert(findById(id))
+    override fun findCommandById(id: String): RecipeCommand? = recipeToRecipeCommand.convert(findById(id))
 
-    override fun deleteById(id: Long) = recipeRepository.deleteById(id)
+    override fun deleteById(id: String) = recipeRepository.deleteById(id)
 }

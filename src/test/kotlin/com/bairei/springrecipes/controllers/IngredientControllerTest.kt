@@ -47,7 +47,7 @@ class IngredientControllerTest {
     fun testListIngredients() {
         // given
         val recipeCommand = RecipeCommand()
-       `when`(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand)
+       `when`(recipeService.findCommandById(anyString())).thenReturn(recipeCommand)
 
         // when
         mockMvc.perform(get("/recipe/1/ingredients"))
@@ -56,7 +56,7 @@ class IngredientControllerTest {
                 .andExpect(model().attributeExists("recipe"))
 
         // then
-        verify(recipeService, times(1)).findCommandById(anyLong())
+        verify(recipeService, times(1)).findCommandById(anyString())
 
     }
 
@@ -66,7 +66,7 @@ class IngredientControllerTest {
         val ingredientCommand = IngredientCommand()
 
         // when
-        `when`(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand)
+        `when`(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(ingredientCommand)
 
         // then
         mockMvc.perform(get("/recipe/1/ingredient/2/show"))
@@ -79,10 +79,10 @@ class IngredientControllerTest {
     fun testNewIngredientForm(){
         // given
         val recipeCommand = RecipeCommand()
-        recipeCommand.id = 1L
+        recipeCommand.id = "1"
 
         // when
-        `when`(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand)
+        `when`(recipeService.findCommandById(anyString())).thenReturn(recipeCommand)
         `when`(unitOfMeasureService.listAllUoms()).thenReturn(emptyArray<UnitOfMeasureCommand>().toHashSet())
 
         // then
@@ -91,7 +91,7 @@ class IngredientControllerTest {
                 .andExpect(view().name("recipe/ingredient/ingredientform"))
                 .andExpect(model().attributeExists("ingredient"))
                 .andExpect(model().attributeExists("uomList"))
-        verify(recipeService, times(1)).findCommandById(ArgumentMatchers.anyLong())
+        verify(recipeService, times(1)).findCommandById(anyString())
     }
 
     @Test
@@ -101,7 +101,7 @@ class IngredientControllerTest {
         val ingredientCommand = IngredientCommand()
 
         //when
-        `when`(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand)
+        `when`(ingredientService.findByRecipeIdAndIngredientId(anyString(), anyString())).thenReturn(ingredientCommand)
         `when`(unitOfMeasureService.listAllUoms()).thenReturn(emptySet<UnitOfMeasureCommand>().toHashSet())
 
         //then
@@ -118,7 +118,7 @@ class IngredientControllerTest {
                 .andExpect(status().is3xxRedirection)
                 .andExpect(view().name("redirect:/recipe/1/ingredients/"))
 
-        verify(ingredientService, times(1)).deleteIngredientFromRecipeById(anyLong(), anyLong())
+        verify(ingredientService, times(1)).deleteIngredientFromRecipeById(anyString(), anyString())
     }
 
     @Test
@@ -126,8 +126,8 @@ class IngredientControllerTest {
     fun testSaveOrUpdate() {
         //given
         val command = IngredientCommand()
-        command.id = 3L
-        command.recipeId = 2L
+        command.id = "3"
+        command.recipeId = "2"
 
         //when
         `when`(ingredientService.saveIngredientCommand(any())).thenReturn(command)

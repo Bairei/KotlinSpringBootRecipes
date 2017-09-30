@@ -44,7 +44,7 @@ class NotesToNotesCommandTest {
 
     companion object {
 
-        val ID_VALUE = 1L
+        val ID_VALUE = "1"
         val RECIPE_NOTES = "Notes"
     }
 }
