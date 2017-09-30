@@ -1,9 +1,6 @@
 package com.bairei.springrecipes.bootstrap
 
-import com.bairei.springrecipes.domain.Difficulty
-import com.bairei.springrecipes.domain.Ingredient
-import com.bairei.springrecipes.domain.Notes
-import com.bairei.springrecipes.domain.Recipe
+import com.bairei.springrecipes.domain.*
 import com.bairei.springrecipes.repositories.CategoryRepository
 import com.bairei.springrecipes.repositories.RecipeRepository
 import com.bairei.springrecipes.repositories.UnitOfMeasureRepository
@@ -14,9 +11,17 @@ import org.springframework.context.event.ContextRefreshedEvent
 import org.springframework.stereotype.Component
 import org.springframework.transaction.annotation.Transactional
 import java.math.BigDecimal
+import com.bairei.springrecipes.domain.Ingredient
+import com.bairei.springrecipes.domain.Difficulty
+import com.bairei.springrecipes.domain.Recipe
+import org.springframework.util.ClassUtils.isPresent
+import com.bairei.springrecipes.domain.UnitOfMeasure
+import java.util.ArrayList
+
+
+
 
 @Component
-@Profile("default")
 class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeRepository,
                                              val categoryRepository: CategoryRepository,
                                              val unitOfMeasureRepository: UnitOfMeasureRepository
@@ -24,248 +29,238 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
 
     @Transactional
     override fun onApplicationEvent(event: ContextRefreshedEvent?) {
-        val guacamole = Recipe()
-        guacamole.prepTime = 10
-        guacamole.cookTime = 0
-        guacamole.difficulty = Difficulty.EASY
-        guacamole.description = "Perfect Guacamole"
-        guacamole.directions = "1 Cut avocado, remove flesh.\n2 Mash with a fork.\n3 Add salt, lime juice, and the rest" +
-                "\n4 Cover with plastic and chill to store"
-        val guacamoleNotes = Notes()
-        guacamoleNotes.recipe = guacamole
-        guacamoleNotes.recipeNotes = "Be careful handling chiles if using. Wash your hands thoroughly after handling and" +
-                " do not touch your eyes or the area near your eyes with your hands for several hours."
-        guacamole.notes = guacamoleNotes
-        guacamole.url = "http://www.simplyrecipes.com/recipes/perfect_guacamole/"
-        guacamole.source = "Simply Recipes"
-        guacamole.servings = 4
-        val mexican = categoryRepository.findByDescription("Mexican").get()
-        mexican.recipes.add(guacamole)
-        guacamole.categories.add(mexican)
-        // Avocados
-        val avocados = Ingredient()
-        avocados.description = "Ripe avocados"
-        avocados.amount = BigDecimal(2)
-        avocados.uom = unitOfMeasureRepository.findByDescription("Piece").get()
-        avocados.recipe = guacamole
-        // Kosher Salt
-        val kosherSalt = Ingredient()
-        kosherSalt.description = "Kosher Salt"
-        kosherSalt.amount = BigDecimal(0.5)
-        kosherSalt.uom = unitOfMeasureRepository.findByDescription("Teaspoon").get()
-        kosherSalt.recipe = guacamole
-        // Lemon or lime juice
-        val lemonOrLimeJuice = Ingredient()
-        lemonOrLimeJuice.amount = BigDecimal(1)
-        lemonOrLimeJuice.uom = unitOfMeasureRepository.findByDescription("Tablespoon").get()
-        lemonOrLimeJuice.recipe = guacamole
-        lemonOrLimeJuice.description = "Fresh lime or lemon juice"
-        // Onions
-        val onions = Ingredient()
-        onions.description = "Minced red onion or thinly sliced green onion"
-        onions.amount = BigDecimal(2)
-        onions.uom = unitOfMeasureRepository.findByDescription("Tablespoon").get()
-        onions.recipe = guacamole
-        // serrano chiles
-        val serranoChiles = Ingredient()
-        serranoChiles.description = "Serrano chiles, stems and seeds removed, minced"
-        serranoChiles.amount = BigDecimal(2)
-        serranoChiles.uom = unitOfMeasureRepository.findByDescription("Piece").get()
-        serranoChiles.recipe = guacamole
-        // cilantro
-        val cilantro = Ingredient()
-        cilantro.description = "Cilantro (leaves and tender stems), finely chopped"
-        cilantro.amount = BigDecimal(2)
-        cilantro.uom = unitOfMeasureRepository.findByDescription("Tablespoon").get()
-        cilantro.recipe = guacamole
-        // black pepper
-        val pepper = Ingredient()
-        pepper.recipe = guacamole
-        pepper.uom = unitOfMeasureRepository.findByDescription("Dash").get()
-        pepper.amount = BigDecimal(1)
-        pepper.description = "Freshly grated black pepper"
-        // tomato
-        val tomato = Ingredient()
-        tomato.description = "Tomato, seeds and pulp removed, chopped"
-        tomato.amount = BigDecimal(0.5)
-        tomato.uom = unitOfMeasureRepository.findByDescription("Piece").get()
-        tomato.recipe = guacamole
+        loadCategories()
+        loadUom()
+    }
 
-        // add and save
-        guacamole.ingredients.add(avocados)
-        guacamole.ingredients.add(kosherSalt)
-        guacamole.ingredients.add(lemonOrLimeJuice)
-        guacamole.ingredients.add(onions)
-        guacamole.ingredients.add(serranoChiles)
-        guacamole.ingredients.add(cilantro)
-        guacamole.ingredients.add(pepper)
-        guacamole.ingredients.add(tomato)
+    private fun getRecipes(): List<Recipe> {
 
-        // chicken tacos
-        val chickenTacos = Recipe()
-        chickenTacos.url = "http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/"
-        chickenTacos.source="Simply Recipes"
-        chickenTacos.directions = "1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
-                "2 Make the marinade and coat the chicken\n" +
-                "3 Grill the chicken\n" +
-                "4 Warm the tortillas\n" +
-                "5 Assemble the tacos"
-        chickenTacos.description = "Spicy Grilled Chicken Tacos"
-        chickenTacos.difficulty = Difficulty.EASY
-        chickenTacos.cookTime = 15
-        chickenTacos.prepTime = 20
-        mexican.recipes.add(chickenTacos)
-        val american = categoryRepository.findByDescription("American").get()
-        american.recipes.add(chickenTacos)
-        chickenTacos.categories.add(american)
-        chickenTacos.categories.add(mexican)
-        val tacosNotes = Notes()
-        tacosNotes.recipe = chickenTacos
-        tacosNotes.recipeNotes = "If you can't find ancho chili powder, you replace the ancho chili," +
-                " the oregano, and the cumin with 2 1/2 tablespoons regular chili powder," +
-                " though the flavor won't be quite the same."
-        chickenTacos.notes = tacosNotes
-        chickenTacos.servings = 6
+        val recipes = ArrayList<Recipe>(2)
 
-        // chili powder
-        val chiliPowder = Ingredient()
-        chiliPowder.recipe = chickenTacos
-        chiliPowder.amount = BigDecimal(2)
-        chiliPowder.uom = unitOfMeasureRepository.findByDescription("Teaspoon").get()
-        chiliPowder.description = "Ancho chili powder"
-        chickenTacos.ingredients.add(chiliPowder)
-        // oregano
-        val oregano = Ingredient()
-        oregano.recipe = chickenTacos
-        oregano.amount = BigDecimal(1)
-        oregano.uom = unitOfMeasureRepository.findByDescription("Teaspoon").get()
-        oregano.description = "Dried oregano"
-        chickenTacos.ingredients.add(oregano)
-        // cumin
-        val cumin = Ingredient()
-        cumin.description = "Dried cumin"
-        cumin.recipe = chickenTacos
-        cumin.amount = BigDecimal(1)
-        cumin.uom = unitOfMeasureRepository.findByDescription("Teaspoon").get()
-        chickenTacos.ingredients.add(cumin)
-        // sugar
-        val sugar = Ingredient()
-        sugar.recipe = chickenTacos
-        sugar.description = "Sugar"
-        sugar.amount = BigDecimal(1)
-        sugar.uom = unitOfMeasureRepository.findByDescription("Teaspoon").get()
-        chickenTacos.ingredients.add(sugar)
-        // salt
-        val salt = Ingredient()
-        salt.description = "Salt"
-        salt.recipe = chickenTacos
-        salt.amount = BigDecimal(0.5)
-        salt.uom = unitOfMeasureRepository.findByDescription("Teaspoon").get()
-        chickenTacos.ingredients.add(salt)
-        // garlic
-        val garlic = Ingredient()
-        garlic.description = "Clove garlic, finely chopped"
-        garlic.recipe = chickenTacos
-        garlic.amount = BigDecimal(1)
-        garlic.uom = unitOfMeasureRepository.findByDescription("Piece").get()
-        chickenTacos.ingredients.add(garlic)
-        // orange zest
-        val orangeZest = Ingredient()
-        orangeZest.description = "Finely grated orange zest"
-        orangeZest.amount = BigDecimal(1)
-        orangeZest.uom = unitOfMeasureRepository.findByDescription("Tablespoon").get()
-        orangeZest.recipe = chickenTacos
-        chickenTacos.ingredients.add(orangeZest)
-        // orange juice
-        val orangeJuice = Ingredient()
-        orangeJuice.description = "Fresh-squeezed orange juice"
-        orangeJuice.recipe = chickenTacos
-        orangeJuice.uom = unitOfMeasureRepository.findByDescription("Tablespoon").get()
-        orangeJuice.amount = BigDecimal(3)
-        chickenTacos.ingredients.add(orangeJuice)
-        // olive oil
-        val oliveOil = Ingredient()
-        oliveOil.amount = BigDecimal(2)
-        oliveOil.uom = unitOfMeasureRepository.findByDescription("Tablespoon").get()
-        oliveOil.recipe = chickenTacos
-        oliveOil.description = "Olive oil"
-        chickenTacos.ingredients.add(oliveOil)
-        // chicken thighs
-        val chickenThighs = Ingredient()
-        chickenThighs.description = "Skinless, boneless chicken thighs"
-        chickenThighs.recipe = chickenTacos
-        chickenThighs.amount = BigDecimal(1.25)
-        chickenThighs.uom = unitOfMeasureRepository.findByDescription("Ounce").get()
-        chickenTacos.ingredients.add(chickenThighs)
-        // tortillas
-        val tortillas = Ingredient()
-        tortillas.recipe = chickenTacos
-        tortillas.description = "Small corn tortillas"
-        tortillas.amount = BigDecimal(8)
-        tortillas.uom = unitOfMeasureRepository.findByDescription("Piece").get()
-        chickenTacos.ingredients.add(tortillas)
-        // baby arugula
-        val arugula = Ingredient()
-        arugula.description = "Packed baby arugula (3 ounces)"
-        arugula.recipe = chickenTacos
-        arugula.amount = BigDecimal(3)
-        arugula.uom = unitOfMeasureRepository.findByDescription("Cup").get()
-        chickenTacos.ingredients.add(arugula)
-        // avocados, the same as in guacamole recipe
-        val avocados2 = Ingredient()
-        avocados2.description = "Medium ripe avocados, sliced"
-        avocados2.amount = BigDecimal(2)
-        avocados2.uom = unitOfMeasureRepository.findByDescription("Piece").get()
-        avocados2.recipe = chickenTacos
-        chickenTacos.ingredients.add(avocados2)
-        // radishes
-        val radish = Ingredient()
-        radish.description = "Radishes, thinly sliced"
-        radish.recipe = chickenTacos
-        radish.amount = BigDecimal(4)
-        radish.uom = unitOfMeasureRepository.findByDescription("Piece").get()
-        chickenTacos.ingredients.add(radish)
-        // cherry tomatoes
-        val cherryTomatoes = Ingredient()
-        cherryTomatoes.description = "Cherry tomatoes, halved"
-        cherryTomatoes.recipe = chickenTacos
-        cherryTomatoes.amount = BigDecimal(0.5)
-        cherryTomatoes.uom = unitOfMeasureRepository.findByDescription("Pinch").get()
-        chickenTacos.ingredients.add(cherryTomatoes)
-        // red onion
-        val redOnion = Ingredient()
-        redOnion.description = "Onion, thinly sliced"
-        redOnion.recipe = chickenTacos
-        redOnion.amount = BigDecimal(0.25)
-        redOnion.uom = unitOfMeasureRepository.findByDescription("Piece").get()
-        chickenTacos.ingredients.add(redOnion)
-        // cilantro
-        val cilantro2 = Ingredient()
-        cilantro2.description = "Roughly chopped cilantro"
-        cilantro2.amount = BigDecimal(1)
-        cilantro2.uom = unitOfMeasureRepository.findByDescription("Piece").get()
-        cilantro2.recipe = chickenTacos
-        chickenTacos.ingredients.add(cilantro2)
-        // sour cream
-        val sourCream = Ingredient()
-        sourCream.recipe = chickenTacos
-        sourCream.description = "Sour cream thinned with 1/4 cup milk"
-        sourCream.amount = BigDecimal(0.5)
-        sourCream.uom = unitOfMeasureRepository.findByDescription("Cup").get()
-        chickenTacos.ingredients.add(sourCream)
-        // lime
-        val lime = Ingredient()
-        lime.description = "Lime, cut into wedges"
-        lime.amount = BigDecimal(1)
-        lime.uom = unitOfMeasureRepository.findByDescription("Piece").get()
-        lime.recipe = chickenTacos
-        chickenTacos.ingredients.add(lime)
+        //get UOMs
+        val eachUomOptional = unitOfMeasureRepository.findByDescription("Each")
 
-        //Saving recipes
-        val list = ArrayList<Recipe>()
-        list.add(chickenTacos)
-        list.add(guacamole)
-        recipeRepository.saveAll(list)
+        if (!eachUomOptional.isPresent) {
+            throw RuntimeException("Expected UOM Not Found")
+        }
+
+        val tableSpoonUomOptional = unitOfMeasureRepository.findByDescription("Tablespoon")
+
+        if (!tableSpoonUomOptional.isPresent) {
+            throw RuntimeException("Expected UOM Not Found")
+        }
+
+        val teaSpoonUomOptional = unitOfMeasureRepository.findByDescription("Teaspoon")
+
+        if (!teaSpoonUomOptional.isPresent) {
+            throw RuntimeException("Expected UOM Not Found")
+        }
+
+        val dashUomOptional = unitOfMeasureRepository.findByDescription("Dash")
+
+        if (!dashUomOptional.isPresent) {
+            throw RuntimeException("Expected UOM Not Found")
+        }
+
+        val pintUomOptional = unitOfMeasureRepository.findByDescription("Pint")
+
+        if (!pintUomOptional.isPresent) {
+            throw RuntimeException("Expected UOM Not Found")
+        }
+
+        val cupsUomOptional = unitOfMeasureRepository.findByDescription("Cup")
+
+        if (!cupsUomOptional.isPresent) {
+            throw RuntimeException("Expected UOM Not Found")
+        }
+
+        //get optionals
+        val eachUom = eachUomOptional.get()
+        val tableSpoonUom = tableSpoonUomOptional.get()
+        val teapoonUom = tableSpoonUomOptional.get()
+        val dashUom = dashUomOptional.get()
+        val pintUom = dashUomOptional.get()
+        val cupsUom = cupsUomOptional.get()
+
+        //get Categories
+        val americanCategoryOptional = categoryRepository.findByDescription("American")
+
+        if (!americanCategoryOptional.isPresent) {
+            throw RuntimeException("Expected Category Not Found")
+        }
+
+        val mexicanCategoryOptional = categoryRepository.findByDescription("Mexican")
+
+        if (!mexicanCategoryOptional.isPresent) {
+            throw RuntimeException("Expected Category Not Found")
+        }
+
+        val americanCategory = americanCategoryOptional.get()
+        val mexicanCategory = mexicanCategoryOptional.get()
+
+        //Yummy Guac
+        val guacRecipe = Recipe()
+        guacRecipe.description = "Perfect Guacamole"
+        guacRecipe.prepTime = 10
+        guacRecipe.cookTime = 0
+        guacRecipe.difficulty = Difficulty.EASY
+        guacRecipe.directions = "1 Cut avocado, remove flesh: Cut the avocados in half. Remove seed. Score the inside of the avocado with a blunt knife and scoop out the flesh with a spoon" +
+                "\n" +
+                "2 Mash with a fork: Using a fork, roughly mash the avocado. (Don't overdo it! The guacamole should be a little chunky.)" +
+                "\n" +
+                "3 Add salt, lime juice, and the rest: Sprinkle with salt and lime (or lemon) juice. The acid in the lime juice will provide some balance to the richness of the avocado and will help delay the avocados from turning brown.\n" +
+                "Add the chopped onion, cilantro, black pepper, and chiles. Chili peppers vary individually in their hotness. So, start with a half of one chili pepper and add to the guacamole to your desired degree of hotness.\n" +
+                "Remember that much of this is done to taste because of the variability in the fresh ingredients. Start with this recipe and adjust to your taste.\n" +
+                "4 Cover with plastic and chill to store: Place plastic wrap on the surface of the guacamole cover it and to prevent air reaching it. (The oxygen in the air causes oxidation which will turn the guacamole brown.) Refrigerate until ready to serve.\n" +
+                "Chilling tomatoes hurts their flavor, so if you want to add chopped tomato to your guacamole, add it just before serving.\n" +
+                "\n" +
+                "\n" +
+                "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvpiV9Sd"
+
+        val guacNotes = Notes()
+        guacNotes.recipeNotes = "For a very quick guacamole just take a 1/4 cup of salsa and mix it in with your mashed avocados.\n" +
+                "Feel free to experiment! One classic Mexican guacamole has pomegranate seeds and chunks of peaches in it (a Diana Kennedy favorite). Try guacamole with added pineapple, mango, or strawberries.\n" +
+                "The simplest version of guacamole is just mashed avocados with salt. Don't let the lack of availability of other ingredients stop you from making guacamole.\n" +
+                "To extend a limited supply of avocados, add either sour cream or cottage cheese to your guacamole dip. Purists may be horrified, but so what? It tastes great.\n" +
+                "\n" +
+                "\n" +
+                "Read more: http://www.simplyrecipes.com/recipes/perfect_guacamole/#ixzz4jvoun5ws"
+
+        guacRecipe.notes = guacNotes
+
+        //very redundent - could add helper method, and make this simpler
+        guacRecipe.addIngredient(Ingredient(description = "ripe avocados", amount = BigDecimal(2), uom = eachUom))
+        guacRecipe.addIngredient(Ingredient(description = "Kosher salt", amount = BigDecimal(".5"), uom = teapoonUom))
+        guacRecipe.addIngredient(Ingredient(description = "fresh lime juice or lemon juice", amount = BigDecimal(2), uom = tableSpoonUom))
+        guacRecipe.addIngredient(Ingredient(description = "minced red onion or thinly sliced green onion", amount = BigDecimal(2), uom = tableSpoonUom))
+        guacRecipe.addIngredient(Ingredient(description = "serrano chiles, stems and seeds removed, minced", amount = BigDecimal(2), uom = eachUom))
+        guacRecipe.addIngredient(Ingredient(description = "Cilantro", amount = BigDecimal(2), uom = tableSpoonUom))
+        guacRecipe.addIngredient(Ingredient(description = "freshly grated black pepper", amount = BigDecimal(2), uom = dashUom))
+        guacRecipe.addIngredient(Ingredient(description = "ripe tomato, seeds and pulp removed, chopped", amount = BigDecimal(".5"), uom = eachUom))
+
+        guacRecipe.categories.add(americanCategory)
+        guacRecipe.categories.add(mexicanCategory)
+
+        guacRecipe.url = "http://www.simplyrecipes.com/recipes/perfect_guacamole/"
+        guacRecipe.servings = 4
+        guacRecipe.source = "Simply Recipes"
+
+        //add to return list
+        recipes.add(guacRecipe)
+
+        //Yummy Tacos
+        val tacosRecipe = Recipe()
+        tacosRecipe.description = "Spicy Grilled Chicken Taco"
+        tacosRecipe.cookTime = 9
+        tacosRecipe.prepTime = 20
+        tacosRecipe.difficulty = Difficulty.MODERATE
+
+        tacosRecipe.directions = "1 Prepare a gas or charcoal grill for medium-high, direct heat.\n" +
+                "2 Make the marinade and coat the chicken: In a large bowl, stir together the chili powder, oregano, cumin, sugar, salt, garlic and orange zest. Stir in the orange juice and olive oil to make a loose paste. Add the chicken to the bowl and toss to coat all over.\n" +
+                "Set aside to marinate while the grill heats and you prepare the rest of the toppings.\n" +
+                "\n" +
+                "\n" +
+                "3 Grill the chicken: Grill the chicken for 3 to 4 minutes per side, or until a thermometer inserted into the thickest part of the meat registers 165F. Transfer to a plate and rest for 5 minutes.\n" +
+                "4 Warm the tortillas: Place each tortilla on the grill or on a hot, dry skillet over medium-high heat. As soon as you see pockets of the air start to puff up in the tortilla, turn it with tongs and heat for a few seconds on the other side.\n" +
+                "Wrap warmed tortillas in a tea towel to keep them warm until serving.\n" +
+                "5 Assemble the tacos: Slice the chicken into strips. On each tortilla, place a small handful of arugula. Top with chicken slices, sliced avocado, radishes, tomatoes, and onion slices. Drizzle with the thinned sour cream. Serve with lime wedges.\n" +
+                "\n" +
+                "\n" +
+                "Read more: http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvtrAnNm"
+
+        val tacoNotes = Notes()
+        tacoNotes.recipeNotes = "We have a family motto and it is this: Everything goes better in a tortilla.\n" +
+                "Any and every kind of leftover can go inside a warm tortilla, usually with a healthy dose of pickled jalapenos. I can always sniff out a late-night snacker when the aroma of tortillas heating in a hot pan on the stove comes wafting through the house.\n" +
+                "Today’s tacos are more purposeful – a deliberate meal instead of a secretive midnight snack!\n" +
+                "First, I marinate the chicken briefly in a spicy paste of ancho chile powder, oregano, cumin, and sweet orange juice while the grill is heating. You can also use this time to prepare the taco toppings.\n" +
+                "Grill the chicken, then let it rest while you warm the tortillas. Now you are ready to assemble the tacos and dig in. The whole meal comes together in about 30 minutes!\n" +
+                "\n" +
+                "\n" +
+                "Read more: http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/#ixzz4jvu7Q0MJ"
+
+        tacosRecipe.notes = tacoNotes
+
+        tacosRecipe.addIngredient(Ingredient(description = "Ancho Chili Powder",amount =  BigDecimal(2), uom = tableSpoonUom))
+        tacosRecipe.addIngredient(Ingredient(description = "Dried Oregano",amount =  BigDecimal(1), uom =  teapoonUom))
+        tacosRecipe.addIngredient(Ingredient(description = "Dried Cumin",amount =  BigDecimal(1), uom = teapoonUom))
+        tacosRecipe.addIngredient(Ingredient(description = "Sugar",amount =  BigDecimal(1), uom = teapoonUom))
+        tacosRecipe.addIngredient(Ingredient(description = "Salt",amount =  BigDecimal(".5"), uom = teapoonUom))
+        tacosRecipe.addIngredient(Ingredient(description = "Clove of Garlic, Choppedr",amount =  BigDecimal(1), uom = eachUom))
+        tacosRecipe.addIngredient(Ingredient(description = "finely grated orange zestr",amount =  BigDecimal(1), uom = tableSpoonUom))
+        tacosRecipe.addIngredient(Ingredient(description = "fresh-squeezed orange juice",amount =  BigDecimal(3), uom = tableSpoonUom))
+        tacosRecipe.addIngredient(Ingredient(description = "Olive Oil",amount =  BigDecimal(2), uom = tableSpoonUom))
+        tacosRecipe.addIngredient(Ingredient(description = "boneless chicken thighs",amount =  BigDecimal(4), uom = tableSpoonUom))
+        tacosRecipe.addIngredient(Ingredient(description = "small corn tortillasr",amount =  BigDecimal(8), uom = eachUom))
+        tacosRecipe.addIngredient(Ingredient(description = "packed baby arugula",amount =  BigDecimal(3), uom = cupsUom))
+        tacosRecipe.addIngredient(Ingredient(description = "medium ripe avocados, slic",amount =  BigDecimal(2), uom = eachUom))
+        tacosRecipe.addIngredient(Ingredient(description = "radishes, thinly sliced",amount =  BigDecimal(4), uom = eachUom))
+        tacosRecipe.addIngredient(Ingredient(description = "cherry tomatoes, halved",amount =  BigDecimal(".5"), uom = pintUom))
+        tacosRecipe.addIngredient(Ingredient(description = "red onion, thinly sliced",amount =  BigDecimal(".25"), uom = eachUom))
+        tacosRecipe.addIngredient(Ingredient(description = "Roughly chopped cilantro",amount =  BigDecimal(4), uom = eachUom))
+        tacosRecipe.addIngredient(Ingredient(description = "cup sour cream thinned with 1/4 cup milk",amount =  BigDecimal(4), uom = cupsUom))
+        tacosRecipe.addIngredient(Ingredient(description = "lime, cut into wedges",amount = BigDecimal(4), uom = eachUom))
+
+        tacosRecipe.categories.add(americanCategory)
+        tacosRecipe.categories.add(mexicanCategory)
+
+        tacosRecipe.url = "http://www.simplyrecipes.com/recipes/spicy_grilled_chicken_tacos/"
+        tacosRecipe.servings = 4
+        tacosRecipe.source = "Simply Recipes"
+
+        recipes.add(tacosRecipe)
+        return recipes
+    }
+
+    private fun loadCategories() {
+        val cat1 = Category()
+        cat1.description = "American"
+        categoryRepository.save(cat1)
+
+        val cat2 = Category()
+        cat2.description = "Italian"
+        categoryRepository.save(cat2)
+
+        val cat3 = Category()
+        cat3.description = "Mexican"
+        categoryRepository.save(cat3)
+
+        val cat4 = Category()
+        cat4.description = "Fast Food"
+        categoryRepository.save(cat4)
+    }
+
+    private fun loadUom() {
+        val uom1 = UnitOfMeasure()
+        uom1.description = "Teaspoon"
+        unitOfMeasureRepository.save(uom1)
+
+        val uom2 = UnitOfMeasure()
+        uom2.description = "Tablespoon"
+        unitOfMeasureRepository.save(uom2)
+
+        val uom3 = UnitOfMeasure()
+        uom3.description = "Cup"
+        unitOfMeasureRepository.save(uom3)
+
+        val uom4 = UnitOfMeasure()
+        uom4.description = "Pinch"
+        unitOfMeasureRepository.save(uom4)
+
+        val uom5 = UnitOfMeasure()
+        uom5.description = "Ounce"
+        unitOfMeasureRepository.save(uom5)
+
+        val uom6 = UnitOfMeasure()
+        uom6.description = "Each"
+        unitOfMeasureRepository.save(uom6)
+
+        val uom7 = UnitOfMeasure()
+        uom7.description = "Pint"
+        unitOfMeasureRepository.save(uom7)
+
+        val uom8 = UnitOfMeasure()
+        uom8.description = "Dash"
+        unitOfMeasureRepository.save(uom8)
     }
 
 

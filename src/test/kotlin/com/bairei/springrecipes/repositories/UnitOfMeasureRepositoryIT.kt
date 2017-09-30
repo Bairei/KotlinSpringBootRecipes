@@ -2,6 +2,7 @@ package com.bairei.springrecipes.repositories
 
 import org.junit.Assert.assertEquals
 import org.junit.Before
+import org.junit.Ignore
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
@@ -11,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner
 /**
  * created by bairei on 9/21/17.
  */
+@Ignore
 @RunWith(SpringRunner::class)
 @DataJpaTest
 class UnitOfMeasureRepositoryIT {
