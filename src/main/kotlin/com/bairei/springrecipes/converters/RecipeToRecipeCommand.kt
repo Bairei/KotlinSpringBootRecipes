@@ -1,6 +1,7 @@
 package com.bairei.springrecipes.converters
 
 import com.bairei.springrecipes.commands.RecipeCommand
+import com.bairei.springrecipes.domain.Category
 import com.bairei.springrecipes.domain.Recipe
 import org.springframework.core.convert.converter.Converter
 import org.springframework.lang.Nullable
@@ -19,7 +20,7 @@ class RecipeToRecipeCommand (private val categoryConverter: CategoryToCategoryCo
 
         val recipe = RecipeCommand()
 
-        recipe.id = source.id
+        if(source.id != null) recipe.id = source.id!!
         recipe.cookTime = source.cookTime
         recipe.prepTime = source.prepTime
         recipe.description = source.description
@@ -33,7 +34,7 @@ class RecipeToRecipeCommand (private val categoryConverter: CategoryToCategoryCo
 
         if(source.categories.isNotEmpty()){
             source.categories
-                    .forEach { category -> recipe.categories.add(categoryConverter.convert(category)!!) }
+                    .forEach { category: Category -> recipe.categories.add(categoryConverter.convert(category)!!) }
         }
 
         if(source.ingredients.isNotEmpty()){

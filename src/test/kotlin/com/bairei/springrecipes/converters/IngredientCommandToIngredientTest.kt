@@ -70,8 +70,8 @@ class IngredientCommandToIngredientTest {
 
         //then
         assertNotNull(ingredient!!)
-        assertEquals(ingredient.uom.id, "")  // Expect initialized
-        assertEquals(ingredient.uom.description, "") // UOM with default id and desc values
+        assertEquals(ingredient.uom.id, null)  // Expect initialized
+        assertEquals(ingredient.uom.description, "") // UOM with null id and desc values
         assertEquals(ID_VALUE, ingredient.id)
         assertEquals(AMOUNT, ingredient.amount)
         assertEquals(DESCRIPTION, ingredient.description)

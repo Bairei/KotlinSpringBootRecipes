@@ -16,6 +16,8 @@ import com.bairei.springrecipes.domain.Difficulty
 import com.bairei.springrecipes.domain.Recipe
 import org.springframework.util.ClassUtils.isPresent
 import com.bairei.springrecipes.domain.UnitOfMeasure
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.util.ArrayList
 
 
@@ -27,10 +29,14 @@ class RecipeBootstrap @Autowired constructor(val recipeRepository: RecipeReposit
                                              val unitOfMeasureRepository: UnitOfMeasureRepository
                                             ) : ApplicationListener<ContextRefreshedEvent> {
 
+    private val log : Logger = LoggerFactory.getLogger(this::class.java)
+
     @Transactional
     override fun onApplicationEvent(event: ContextRefreshedEvent?) {
         loadCategories()
         loadUom()
+        recipeRepository.saveAll(getRecipes())
+        log.debug("loading data from RecipeBootstrap")
     }
 
     private fun getRecipes(): List<Recipe> {

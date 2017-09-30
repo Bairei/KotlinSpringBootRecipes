@@ -51,7 +51,7 @@ class ImageServiceImplTest {
         //then
         verify<RecipeRepository>(recipeRepository, times(1)).save(argumentCaptor.capture())
         val savedRecipe = argumentCaptor.value
-        assertEquals(multipartFile.bytes.size.toLong(), savedRecipe.image.size.toLong())
+        assertEquals(multipartFile.bytes.size.toLong(), savedRecipe.image.data.size.toLong())
     }
 
 }

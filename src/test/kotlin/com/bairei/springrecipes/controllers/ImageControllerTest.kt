@@ -3,6 +3,7 @@ package com.bairei.springrecipes.controllers
 import com.bairei.springrecipes.commands.RecipeCommand
 import com.bairei.springrecipes.services.ImageService
 import com.bairei.springrecipes.services.RecipeService
+import org.bson.types.Binary
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -88,7 +89,7 @@ class ImageControllerTest {
             bytesBoxed[i++] = primByte
         }
 
-        command.image = bytesBoxed
+        command.image = Binary(bytesBoxed)
 
         `when`(recipeService.findCommandById(anyString())).thenReturn(command)
 

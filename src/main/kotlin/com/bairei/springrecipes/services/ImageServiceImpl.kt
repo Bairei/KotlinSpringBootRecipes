@@ -1,6 +1,7 @@
 package com.bairei.springrecipes.services
 
 import com.bairei.springrecipes.repositories.RecipeRepository
+import org.bson.types.Binary
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import org.springframework.stereotype.Service
@@ -24,7 +25,7 @@ class ImageServiceImpl (private val recipeRepository: RecipeRepository) : ImageS
                 byteObjects[i++] = b
             }
 
-            recipe.image = byteObjects
+            recipe.image = Binary(byteObjects)
 
             recipeRepository.save(recipe)
         } catch(e: IOException){

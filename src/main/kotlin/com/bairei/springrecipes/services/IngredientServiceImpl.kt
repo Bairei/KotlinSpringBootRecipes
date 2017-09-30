@@ -69,8 +69,8 @@ class IngredientServiceImpl (private val ingredientToIngredientCommand: Ingredie
             } else {
                 //add new Ingredient
                 val ingredient = ingredientCommandToIngredient.convert(command)
-                ingredient!!.recipe = recipe
-                recipe.addIngredient(ingredient)
+//                ingredient!!.recipe = recipe
+                recipe.addIngredient(ingredient!!)
             }
 
             val savedRecipe = recipeRepository.save(recipe)
@@ -109,7 +109,6 @@ class IngredientServiceImpl (private val ingredientToIngredientCommand: Ingredie
             if(ingredientOptional.isPresent){
                 log.debug("found ingredient with id $id")
                 val ingredientToDelete = ingredientOptional.get()
-                ingredientToDelete.recipe = null
                 recipeToSave.ingredients.remove(ingredientToDelete)
                 recipeRepository.save(recipeToSave)
                 return

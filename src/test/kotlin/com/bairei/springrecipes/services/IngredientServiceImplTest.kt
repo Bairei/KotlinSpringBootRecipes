@@ -16,6 +16,8 @@ import org.mockito.ArgumentMatchers
 import org.mockito.Mock
 import org.mockito.Mockito.*
 import org.mockito.MockitoAnnotations
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 import java.util.*
 
 
@@ -35,6 +37,8 @@ class IngredientServiceImplTest {
     private val ingredientToIngredientCommand: IngredientToIngredientCommand
 
     private val ingredientCommandToIngredient : IngredientCommandToIngredient
+
+    private val log: Logger = LoggerFactory.getLogger(this::class.java)
 
     //init converters
     init {
@@ -83,7 +87,6 @@ class IngredientServiceImplTest {
 
         //when
         assertEquals("3", ingredientCommand.id)
-        assertEquals("1", ingredientCommand.recipeId)
         verify<RecipeRepository>(recipeRepository, times(1)).findById(anyString())
     }
 
@@ -121,7 +124,7 @@ class IngredientServiceImplTest {
         val ingredient = Ingredient()
         ingredient.id = "3"
         recipe.addIngredient(ingredient)
-        ingredient.recipe = recipe
+//        ingredient.recipe = recipe
         val recipeOptional = Optional.of(recipe)
 
         `when`(recipeRepository.findById(anyString())).thenReturn(recipeOptional)

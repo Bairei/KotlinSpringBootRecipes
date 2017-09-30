@@ -1,6 +1,12 @@
 package com.bairei.springrecipes.domain
 
-class Recipe (var id: String = "",
+import org.bson.types.Binary
+import org.springframework.data.annotation.Id
+import org.springframework.data.mongodb.core.mapping.DBRef
+import org.springframework.data.mongodb.core.mapping.Document
+
+@Document
+class Recipe (@Id var id: String? = null,
               var description: String = "",
               var prepTime: Int = 0,
               var cookTime: Int = 0,
@@ -10,12 +16,12 @@ class Recipe (var id: String = "",
               var directions: String = "",
               var difficulty: Difficulty = Difficulty.EASY,
               var ingredients: MutableSet<Ingredient> = emptySet<Ingredient>().toMutableSet(),
-              var image: ByteArray = ByteArray(0),
+              var image: Binary = Binary(ByteArray(0)),
               var notes: Notes = Notes(),
-              var categories: MutableSet<Category> = emptySet<Category>().toMutableSet()
+              @DBRef var categories: MutableSet<Category> = emptySet<Category>().toHashSet()
 ){
     fun addIngredient(ingredient: Ingredient): Recipe {
-        ingredient.recipe = this
+//        ingredient.recipe = this
         this.ingredients.add(ingredient)
         return this
     }

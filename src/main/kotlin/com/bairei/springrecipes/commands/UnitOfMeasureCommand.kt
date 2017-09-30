@@ -1,6 +1,6 @@
 package com.bairei.springrecipes.commands
 
 class UnitOfMeasureCommand {
-    var id: String = ""
+    var id: String? = null
     var description: String = ""
 }

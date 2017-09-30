@@ -39,15 +39,15 @@ class IngredientToIngredientCommandTest {
         //given
         val ingredient = Ingredient()
         ingredient.id = ID_VALUE
-        ingredient.recipe = RECIPE
+//        ingredient.recipe = RECIPE
         ingredient.amount = AMOUNT
         ingredient.description = DESCRIPTION
         //        ingredient.uom = null
         //when
         val ingredientCommand = converter.convert(ingredient)
         //then
-        assertEquals(ingredientCommand!!.uom.id, "") // Assert that has uom
-        assertEquals(ingredientCommand.uom.description, "") // with default values (id = "", desc ="")
+        assertEquals(ingredientCommand!!.uom.id, null) // Assert that has uom
+        assertEquals(ingredientCommand.uom.description, "") // with default values (id = null, desc ="")
         assertEquals(ID_VALUE, ingredientCommand.id)
         // assertEquals(RECIPE, ingredientCommand.get);
         assertEquals(AMOUNT, ingredientCommand.amount)
@@ -60,7 +60,7 @@ class IngredientToIngredientCommandTest {
         //given
         val ingredient = Ingredient()
         ingredient.id = ID_VALUE
-        ingredient.recipe = RECIPE
+//        ingredient.recipe = RECIPE
         ingredient.amount = AMOUNT
         ingredient.description = DESCRIPTION
 

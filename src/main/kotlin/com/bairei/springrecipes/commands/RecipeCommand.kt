@@ -1,6 +1,7 @@
 package com.bairei.springrecipes.commands
 
 import com.bairei.springrecipes.domain.Difficulty
+import org.bson.types.Binary
 import org.hibernate.validator.constraints.NotBlank
 import org.hibernate.validator.constraints.URL
 import javax.validation.constraints.Max
@@ -16,11 +17,11 @@ class RecipeCommand (
         var source: String = "",
         @get:URL var url: String = "",
         @get:NotBlank var directions: String = "",
-        var ingredients: MutableSet<IngredientCommand> = emptySet<IngredientCommand>().toHashSet(),
+        var ingredients: MutableList<IngredientCommand> = ArrayList(),
         var difficulty: Difficulty = Difficulty.EASY,
         var notes : NotesCommand = NotesCommand(),
-        var image : ByteArray = ByteArray(0),
-        var categories : MutableSet<CategoryCommand> = emptySet<CategoryCommand>().toHashSet()
+        var image : Binary = Binary(ByteArray(0)),
+        var categories : MutableList<CategoryCommand> = ArrayList()
 )
 
 // @get annotations are necessary because the fields are initialized in CONSTRUCTOR, rather than in class itself

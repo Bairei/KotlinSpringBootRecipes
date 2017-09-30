@@ -36,11 +36,11 @@ class ImageController (private val imageService: ImageService,
     fun renderImageFromDB(@PathVariable id: String, response: HttpServletResponse){
         val recipeCommand = recipeService.findCommandById(id)
 
-        if(recipeCommand!!.image.isNotEmpty()){
-            val byteArray = ByteArray(recipeCommand.image.size)
+        if(recipeCommand!!.image.data.isNotEmpty()){
+            val byteArray = ByteArray(recipeCommand.image.data.size)
 
             var i = 0
-            for (wrappedByte in recipeCommand.image){
+            for (wrappedByte in recipeCommand.image.data){
                 byteArray[i++] = wrappedByte
             }
 

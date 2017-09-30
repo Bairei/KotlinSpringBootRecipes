@@ -2,6 +2,7 @@ package com.bairei.springrecipes.converters
 
 import com.bairei.springrecipes.commands.IngredientCommand
 import com.bairei.springrecipes.domain.Ingredient
+import com.bairei.springrecipes.domain.Recipe
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.core.convert.converter.Converter
 import org.springframework.lang.Nullable
@@ -17,7 +18,14 @@ class IngredientCommandToIngredient @Autowired constructor(private val uomConver
 
         val ingredient = Ingredient()
 
-        ingredient.id = source.id
+        if(source.id != null) ingredient.id = source.id!!
+
+        if(source.recipeId != null){
+            val recipe = Recipe()
+            recipe.id = source.recipeId
+            recipe.addIngredient(ingredient)
+        }
+
         ingredient.amount = source.amount
         ingredient.description = source.description
         ingredient.uom = uomConverter.convert(source.uom)!!
